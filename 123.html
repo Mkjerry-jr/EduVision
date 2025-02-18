@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* General Styling */
+        body {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f8cdda, #1e90ff);
+            font-family: Arial, sans-serif;
+            padding-right: 50px;
+        }
+
+        /* Wrapper Box */
+        .wrapper {
+            width: 300px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Show active section */
+        .active {
+            display: block;
+        }
+
+        /* Back Button - Top Left */
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: black;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Text Styling */
+        h1, h2, p, label, a {
+            color: black;
+        }
+
+        /* Glassmorphic Buttons */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Input Fields */
+        .inputbox {
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .inputbox input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            color: black;
+            font-size: 14px;
+        }
+
+        .inputbox i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: black;
+        }
+
+        /* Remember Me & Register */
+        .Remember, .register {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .Remember a, .register a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Role Selection -->
+    <div class="wrapper active" id="roleSelection">
+        <h2>Select Role</h2>
+        <button type="button" class="btn" onclick="openPage('admin')">Admin</button>
+        <button type="button" class="btn" onclick="openPage('teacher')">Teacher</button>
+        <button type="button" class="btn" onclick="openPage('student')">Student</button>
+    </div>
+
+    <!-- Admin Options -->
+    <div class="wrapper" id="adminOptions">
+        <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+        <h2>Admin Options</h2>
+        <button type="button" class="btn" onclick="openLogin()">BEO</button>
+        <button type="button" class="btn" onclick="openLogin()">Cluster Head</button>
+        <button type="button" class="btn" onclick="openLogin()">Head</button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="wrapper" id="loginForm">
+        <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+        <form>
+            <h1>Login</h1>
+            <div class="inputbox">
+                <input type="text" placeholder="Username" required>
+                <i class='bx bx-user'></i>
+            </div>
+            <div class="inputbox">
+                <input type="password" placeholder="Password" required>
+                <i class='bx bx-lock-alt'></i>
+            </div>
+            <div class="Remember">
+                <label><input type="checkbox"> Remember Me</label>
+                <a href="#">Forget Password?</a>
+            </div>
+            <div>
+                <button type="submit" class="btn">Login</button>
+            </div>
+            <div class="register">
+                <p>Don't have an account? <a href="#">Register</a></p>
+            </div>
+        </form>    
+    </div>
+
+    <!-- JavaScript for Navigation -->
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.wrapper').forEach(el => el.classList.remove('active'));
+
+            // Show only the required section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function openPage(role) {
+            if (role === 'admin') {
+                showSection('adminOptions');
+            } else {
+                showSection('loginForm');
+            }
+        }
+
+        function openLogin() {
+            showSection('loginForm');
+        }
+
+        function goBack() {
+            if (document.getElementById('adminOptions').classList.contains('active')) {
+                showSection('roleSelection');
+            } else {
+                showSection('adminOptions');
+            }
+        }
+    </script>
+</body>
+</html>
