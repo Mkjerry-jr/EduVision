@@ -1,1 +1,1 @@
-# SMART-EDUCATION-SYSTEM
+# EduVision
