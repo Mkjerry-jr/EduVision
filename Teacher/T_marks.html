@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks Entry</title>
+    <link rel="stylesheet" href="Marks.styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Student Marks Entry</h2>
+        <form id="marksForm">
+            <label for="name">Student Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="class">Class:</label>
+            <select id="class" required>
+                <option value="">Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <label for="examType">Exam Type:</label>
+            <select id="examType" required>
+                <option value="">Select</option>
+                <option value="internal">Internal Marks</option>
+                <option value="midterm">Mid Term Marks</option>
+                <option value="endterm">End Term Marks</option>
+            </select>
+
+            <label for="englishMarks">English Marks:</label>
+            <input type="number" id="englishMarks" min="0" max="100" required>
+
+            <label for="mathMarks">Math Marks:</label>
+            <input type="number" id="mathMarks" min="0" max="100" required>
+
+            <label for="scienceMarks">Science Marks:</label>
+            <input type="number" id="scienceMarks" min="0" max="100" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="Marks.script.js"></script>
+</body>
+</html>

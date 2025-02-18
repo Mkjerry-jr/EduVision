@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Teacher Registration</title>
+    <link rel="stylesheet" href="Teach.style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>New Teacher Registration</h2>
+        <form id="teacherForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter Full Name" required>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+            
+            <label for="bloodgroup">Blood Group:</label>
+            <select id="bloodgroup" required>
+                <option value="">Select</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+            </select>
+            
+            <label for="education">Education:</label>
+            <select id="education" required>
+                <option value="">Select</option>
+                <option value="B.Ed">B.Ed</option>
+                <option value="M.Ed">M.Ed</option>
+                <option value="PhD">PhD</option>
+                <option value="M.Sc">M.Sc</option>
+                <option value="MA">MA</option>
+            </select>
+
+            <label for="experience">Experience (Years):</label>
+            <input type="number" id="experience" min="0" placeholder="Enter years of experience" required>
+            
+            <label for="domain">Domain:</label>
+            <select id="domain" required>
+                <option value="">Select</option>
+                <option value="English">English</option>
+                <option value="Math">Math</option>
+                <option value="Science">Science</option>
+            </select>
+            
+            <label for="address">Address:</label>
+            <input type="text" id="address" placeholder="Enter Address" required>
+            
+            <label for="mobile">Mobile No.:</label>
+            <input type="tel" id="mobile" pattern="[0-9]{10}" placeholder="Enter 10-digit number" required>
+            
+            <label for="email">Email ID:</label>
+            <input type="email" id="email" placeholder="Enter Email ID" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="Teach.script.js"></script>
+</body>
+</html>
