@@ -116,10 +116,10 @@
         <div class="form-container">
           <h2>Enter Student Marks</h2>
         
-          <form id="marksForm">
+          <form id="marksForm" method="POST" action="/marks">
             <div>
               <label for="classSelect">Select Class</label>
-              <select id="classSelect" required>
+              <select name="classSelected" id="classSelect" required>
                 <option value="">-- Select Class --</option>
                 <option value="Class 1">Class 1</option>
                 <option value="Class 2">Class 2</option>
@@ -130,10 +130,8 @@
             </div>
         
             <div>
-              <label for="studentSelect">Select Student</label>
-              <select id="studentSelect" name="studentSelect" required>
-                <option value="">Loading students...</option>
-              </select>
+              <label for="studentSelect">Enter student rollno</label>
+                <input name="studroll" type="text" required/>
             </div>
         
             <div class="marks-section">

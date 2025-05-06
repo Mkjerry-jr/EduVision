@@ -253,8 +253,50 @@ router.post('/student', async (req, res) => {
             bmi < 29.9 ? "Overweight" :
             "Obese";
 
-              
-            res.render("stud", { student, age, formattedDate, bmiStatus, bmi });
+            async function getStudentMarks(req, res) {
+                try {
+            
+                    const student = await Student.findOne({ rollNo: req.body.username.trim() });
+                    const studentMarks = student.marks;
+                    
+                    if (!studentMarks || studentMarks.length === 0) {
+                        console.log(`No marks data found for student: ${student.fullName}`);
+                        return res.json({ message: "No marks data available for this student" });
+                    }
+            
+                    message = (`Marks data for student`);
+                    
+                    studentMarks.forEach((markEntry, index) => {
+                        
+                        console.log("Internal Marks:");
+                        console.log(`  English: ${markEntry.internal_m.eng}`);
+                        console.log(`  Math: ${markEntry.internal_m.meth}`);
+                        console.log(`  Science: ${markEntry.internal_m.sci}`);
+                        
+                        console.log("Midterm Marks:");
+                        console.log(`  English: ${markEntry.midterm_m.eng}`);
+                        console.log(`  Math: ${markEntry.midterm_m.meth}`);
+                        console.log(`  Science: ${markEntry.midterm_m.sci}`);
+                        
+                        console.log("Endterm Marks:");
+                        console.log(`  English: ${markEntry.endterm_m.eng}`);
+                        console.log(`  Math: ${markEntry.endterm_m.meth}`);
+                        console.log(`  Science: ${markEntry.endterm_m.sci}`);
+                    });
+                    
+                } catch (error) {
+                    console.error("Error retrieving student marks:", error);
+                    return res.status(500).json({ error: "Failed to retrieve student marks" });
+                }
+            }
+
+            
+
+            let failed, passed;
+
+           
+
+            res.render("stud", { student, age, formattedDate, bmiStatus, bmi, failed, passed });
         
         } catch (error) {
             console.error("Error in s_login:", error);
@@ -451,6 +493,57 @@ router.get('/attendance', async (req, res) => {
     } catch (error) {
         console.error("Error in attendance route:", error);
         res.status(500).send('Server error: ' + error.message);
+    }
+});
+
+router.post('/marks', async (req, res) => {
+    const { studroll, internal_english, internal_maths, internal_science, midterm_maths, midterm_science, midterm_english, endterm_english, endterm_maths, endterm_science } = req.body;
+    let message = "";
+    teacher = req.session.teacher;
+    const classSelected = null;
+    const date = null;
+
+    try {
+        if (!studroll) {
+            message = "Missing required fields";
+            console.log("missing required fields")
+            return;
+        }
+
+        const marksEntry = {
+            internal_m: {
+                eng: internal_english,
+                meth: internal_maths,
+                sci: internal_science
+            },
+            midterm_m: {
+                eng: midterm_english,
+                meth: midterm_maths,
+                sci: midterm_science
+            },
+            endterm_m: {
+                eng: endterm_english,
+                meth: endterm_maths,
+                sci: endterm_science
+            }
+        };
+
+        const student = await Student.findOne({ rollNo: studroll });
+        if (student) {
+            student.marks.push(marksEntry);
+            await student.save();
+            message = "Submitted marks successfully";
+        } else {
+            message = "Student not found";
+        }
+
+        console.log(message);
+
+        res.render('teacher/marks', { message, teacher, classSelected, date });
+    } catch (err) {
+        message = "Error: " + err.message;
+        console.error("Error saving marks:", err);
+        res.render('teacher/marks', { message, teacher });
     }
 });
 

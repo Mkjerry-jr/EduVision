@@ -56,7 +56,7 @@
       </div>
     </div>
     <!----------------------------------------Attendance----------------------------------------------------------------------------->
-    <div id="attendance" class="page active">  
+    <div id="attendance" class="page">  
       <div class="container7">
         <h1>Mark Attendance</h1>
       
@@ -113,7 +113,7 @@
 
     
     <!----------------------------------------------Marks-------------------------------------------------------------------- -->
-    <div id="marks" class="page">
+    <div id="marks" class="page active">
       <div class="mark-container">
         <div class="form-container">
           <h2>Enter Student Marks</h2>
@@ -123,11 +123,11 @@
               <label for="classSelect">Select Class</label>
               <select id="classSelect" required>
                 <option value="">-- Select Class --</option>
-                <option value="Class 1">Class 1</option>
-                <option value="Class 2">Class 2</option>
-                <option value="Class 3">Class 3</option>
-                <option value="Class 4">Class 4</option>
-                <option value="Class 5">Class 5</option>
+                <option name="1st" value="Class 1">Class 1</option>
+                <option name="2nd" value="Class 2">Class 2</option>
+                <option name="3rd" value="Class 3">Class 3</option>
+                <option name="4th" value="Class 4">Class 4</option>
+                <option name="5th" value="Class 5">Class 5</option>
               </select>
             </div>
         
@@ -158,7 +158,12 @@
                 <input type="number" name="endterm_science" placeholder="Science" min="0" max="100" required>
               </div>
             </div>
-        
+    
+            <% if(message) { %>
+                <span><%= message %></span> 
+                <% } else { %>
+                    <span><%= message %></span>
+                    <% } %>
             <button type="submit">Submit Marks</button>
           </form>
         </div>
