@@ -202,110 +202,162 @@ router.post('/cluster', async (req, res) => {
 //STUDENT
 router.post('/student', async (req, res) => {
     try {
-            console.log("Received username:", req.body.username);
-            console.log("Received password:", req.body.password);
-    
-            if (!req.body.username || !req.body.password) {
-                return res.status(400).send('Username and password are required');
-            }
-    
-            const student = await Student.findOne({ rollNo: req.body.username.trim() });
-    
-            if (!student) {
-                console.log("No user found with rollNo:", req.body.username);
-                return res.status(400).send('User not found');
-            }
-    
-            const inputPassword = String(req.body.password);
+        let message;
 
-             const ip = typeof inputPassword;
-             const sf = typeof student.fatherPhone;
-    
-            if (inputPassword !== String(student.fatherPhone)) {
-                console.log(`Password mismatch:
-                    Input: ${ip}
-                    Stored: ${sf}`);
-                return res.status(400).send('Wrong password');
-            }
+        console.log("Received username:", req.body.username);
+        console.log("Received password:", req.body.password);
 
-            let dob = student.dob;
-            let time = new Date(dob);
-            const day = String(time.getDate()).padStart(2, '0');
-            const month = String(time.getMonth() + 1).padStart(2, '0');
-            const year = time.getFullYear();
-
-            const formattedDate = `${day}/${month}/${year}`;
-            console.log("User logged in successfully:", req.body.username);
-
-            const bdayyear = `${year}`;
-            const today = new Date();
-            const age = today.getFullYear() - parseInt(bdayyear);
-            
-            const height = student.height;
-            const weight = student.weight;
-
-            const bmiRounded = weight/((height/100)*(height/100));
-            const bmi = parseFloat(bmiRounded.toFixed(2));
-
-            const bmiStatus = 
-            bmi < 18.5 ? "Underweight" :
-            bmi < 24.9 ? "Normal" :
-            bmi < 29.9 ? "Overweight" :
-            "Obese";
-
-            async function getStudentMarks(req, res) {
-                try {
-            
-                    const student = await Student.findOne({ rollNo: req.body.username.trim() });
-                    const studentMarks = student.marks;
-                    
-                    if (!studentMarks || studentMarks.length === 0) {
-                        console.log(`No marks data found for student: ${student.fullName}`);
-                        return res.json({ message: "No marks data available for this student" });
-                    }
-            
-                    message = (`Marks data for student`);
-                    
-                    studentMarks.forEach((markEntry, index) => {
-                        
-                        console.log("Internal Marks:");
-                        console.log(`  English: ${markEntry.internal_m.eng}`);
-                        console.log(`  Math: ${markEntry.internal_m.meth}`);
-                        console.log(`  Science: ${markEntry.internal_m.sci}`);
-                        
-                        console.log("Midterm Marks:");
-                        console.log(`  English: ${markEntry.midterm_m.eng}`);
-                        console.log(`  Math: ${markEntry.midterm_m.meth}`);
-                        console.log(`  Science: ${markEntry.midterm_m.sci}`);
-                        
-                        console.log("Endterm Marks:");
-                        console.log(`  English: ${markEntry.endterm_m.eng}`);
-                        console.log(`  Math: ${markEntry.endterm_m.meth}`);
-                        console.log(`  Science: ${markEntry.endterm_m.sci}`);
-                    });
-                    
-                } catch (error) {
-                    console.error("Error retrieving student marks:", error);
-                    return res.status(500).json({ error: "Failed to retrieve student marks" });
-                }
-            }
-
-            
-
-            let failed, passed;
-
-           
-
-            res.render("stud", { student, age, formattedDate, bmiStatus, bmi, failed, passed });
-        
-        } catch (error) {
-            console.error("Error in s_login:", error);
-            res.status(500).send('Server error');
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).send('Username and password are required');
         }
+
+        const student = await Student.findOne({ rollNo: req.body.username.trim() });
+
+        if (!student) {
+            console.log("No user found with rollNo:", req.body.username);
+            return res.status(400).send('User not found');
+        }
+
+        const inputPassword = Number(req.body.password);
+        console.log(inputPassword)
+
+        const ip = typeof inputPassword;
+        const sf = typeof student.fatherPhone;
+
+        if (inputPassword !== student.fatherPhone) {
+            console.log(`Password mismatch:
+                Input: ${ip}
+                Stored: ${sf}`);
+            return res.status(400).send('Wrong password');
+        }
+
+        let dob = student.dob;
+        let time = new Date(dob);
+        const day = String(time.getDate()).padStart(2, '0');
+        const month = String(time.getMonth() + 1).padStart(2, '0');
+        const year = time.getFullYear();
+
+        const formattedDate = `${day}/${month}/${year}`;
+        console.log("User logged in successfully:", req.body.username);
+
+        const bdayyear = `${year}`;
+        const today = new Date();
+        const age = today.getFullYear() - parseInt(bdayyear);
+        
+        const height = student.height;
+        const weight = student.weight;
+
+        const bmiRounded = weight/((height/100)*(height/100));
+        const bmi = parseFloat(bmiRounded.toFixed(2));
+
+        const bmiStatus = 
+        bmi < 18.5 ? "Underweight" :
+        bmi < 24.9 ? "Normal" :
+        bmi < 29.9 ? "Overweight" :
+        "Obese";
+
+        let failed, passed;
+        let engTotal = 0, methTotal = 0, sciTotal = 0;
+        let ie = 0, im = 0, is = 0;
+        let me = 0, mm = 0, ms = 0;
+        let ee = 0, em = 0, es;
+        let totalDays;
+        let presentDays;
+        let percentage;
+
+        async function calculateStudentMarks() {
+            try {
+                if (!student.marks || student.marks.length === 0) {
+                    console.log(`No marks data found for student: ${student.fullName}`);
+                    message = "No marks data available for this student";
+                    return;
+                }
+                
+                const markEntry = student.marks[0];
+                
+                ie = markEntry.internal_m && markEntry.internal_m.eng ? Number(markEntry.internal_m.eng) : 0;
+                im = markEntry.internal_m && markEntry.internal_m.meth ? Number(markEntry.internal_m.meth) : 0;
+                is = markEntry.internal_m && markEntry.internal_m.sci ? Number(markEntry.internal_m.sci) : 0;
+                
+                me = markEntry.midterm_m && markEntry.midterm_m.eng ? Number(markEntry.midterm_m.eng) : 0;
+                mm = markEntry.midterm_m && markEntry.midterm_m.meth ? Number(markEntry.midterm_m.meth) : 0;
+                ms = markEntry.midterm_m && markEntry.midterm_m.sci ? Number(markEntry.midterm_m.sci) : 0;
+                
+                ee = markEntry.endterm_m && markEntry.endterm_m.eng ? Number(markEntry.endterm_m.eng) : 0;
+                em = markEntry.endterm_m && markEntry.endterm_m.meth ? Number(markEntry.endterm_m.meth) : 0;
+                es = markEntry.endterm_m && markEntry.endterm_m.sci ? Number(markEntry.endterm_m.sci) : 0;
+
+                engTotal = ie + me + ee;
+                methTotal = im + mm + em;
+                sciTotal = is + ms + es;
+
+                console.log(engTotal);
+                console.log(methTotal);
+                console.log(sciTotal);
+
+                console.log("Marked data for student");
+                
+                if (engTotal > 75 && methTotal > 75 && sciTotal > 75){
+                    passed = "Passed";
+                } else if (engTotal < 75 || methTotal < 75 || sciTotal <75 ) {
+                    failed = "Failed."
+                }
+                
+            } catch (error) {
+                console.error("Error retrieving student marks:", error);
+                message = "Failed to retrieve student marks: " + error.message;
+            }
+        }
+        
+        await calculateStudentMarks();
+
+        async function getAttendanceSummary() {
+            totalDays = student.attendanceSummary.totalDays;
+            presentDays = student.attendanceSummary.presentDays;
+            percentage = student.attendanceSummary.percentage;
+        }
+
+        await getAttendanceSummary();
+
+        const absentDays = totalDays - presentDays;
+
+        res.render("stud", { 
+            student, 
+            age, 
+            formattedDate, 
+            bmiStatus, 
+            bmi,
+            totalDays,
+            presentDays,
+            absentDays,
+            percentage,
+            failed, 
+            passed, 
+            message,
+            engTotal,
+            methTotal,
+            sciTotal,
+            im,
+            ie,
+            is,
+            mm,
+            me,
+            ms,
+            es,
+            em,
+            ee
+        });
+    
+    } catch (error) {
+        console.error("Error in s_login:", error);
+        res.status(500).send('Server error');
+    }
 });
 
 //HEAD
 router.post('/head', async (req, res) => {
+    let student;
+    let teacher;
     try {
         // console.log(req.body);
         console.log("Received username:", req.body.username);
@@ -345,10 +397,17 @@ router.post('/head', async (req, res) => {
             console.log("No password field found in teacher document");
             return res.status(500).send('Server error: invalid teacher record');
         }
-        
-        console.log("User logged in as teacher successfully:", head.sid);
 
-        res.render("head", { head });
+        try {
+            student = await Student.find({ sid: req.body.username, tribal: 'Yes'  });
+            teacher = await Teacher.find({ sid: Number(req.body.username) });
+        } catch (error) {
+            res.send(error);
+        }
+        
+        console.log("User logged in as head successfully:", head.sid);
+
+        res.render("head", { head, student, teacher });
 
     } catch (error) {
         console.error("Error in head login:", error);

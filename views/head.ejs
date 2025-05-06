@@ -370,13 +370,21 @@
   <!-- Members Column -->
   <div class="column" id="membersColumn">
     <h2>Tribal Students</h2>
-    <ul id="members"></ul>
+    <ul id="leaders">
+    <% student.forEach(students => { %>
+        <div class="assigned"><%= students.fullName %></div>
+    <% }) %>
+    </ul>
   </div>
 
   <!-- Team Leaders Column -->
   <div class="column" id="leadersColumn">
     <h2>Teachers (11)</h2>
-    <ul id="leaders"></ul>
+    <ul id="leaders">
+      <% teacher.forEach(teachers => { %>
+        <div class="assigned"><%= teachers.name %></div>
+    <% }) %>
+    </ul>
   </div>
 </div>
 </div>
@@ -483,10 +491,7 @@
       const className = isAvailable ? 'unassigned' : 'assigned';
       const teamList = leader.team.map(m => m.name).join(', ') || 'Available';
       leadersList.innerHTML += `
-        <li class="user ${className}">
-          <strong>${leader.name}</strong><br>
-          <small>${teamList}</small>
-        </li>`;
+        `;
     });
   }
 
