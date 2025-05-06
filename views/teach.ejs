@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Login</title>
+  <link rel="stylesheet" href="../teach-style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="back-button" onclick="goBack()">
+        <img src="https://cdn-icons-png.flaticon.com/512/545/545680.png" alt="Back" style="width:20px;height:20px;">
+      </div>
+      Teacher
+    </div>
+
+    <div class="button" onclick="showPage('home')">Home</div>
+    <div class="button" onclick="showPage('timetable')">Timetable</div>
+    <div class="button" onclick="showPage('attendance')">Attendance</div>
+    <div class="button" onclick="showPage('marks')">Marks</div>
+  </div>
+
+  <!----------------------------------------------Home------------------------------------------------------>
+  <div class="content-area">
+    <div id="home" class="page active">
+      <div class="profile-row">
+        <div class="profile-photo">T</div>
+        <div class="profile-info">
+          <p><strong>Name:</strong> <%= teacher.name %></p>
+          <p><strong>Qualification:</strong> <%= teacher.education %></p>
+          <!-- 
+          <p><strong>Designation:</strong><%= teacher.designation %></p>
+          --> 
+        </div>
+      </div>
+    </div>
+    <!------------------------------------Timetable---------------------------------------------->
+    <div id="timetable" class="page">
+      <div class="container">
+        <h1>Timetable</h1>
+        <div class="info-grid">
+          <div class="info-item">Job Type: <span id="class-name" style="margin-left:10px;">Full Time</span></div>
+          <!-- 
+          <div class="info-item">Class: <span id="class-name" style="margin-left:10px;"><%= teacher.grade %></span></div>
+          -->
+          <div class="info-item">Class Teacher: <%= teacher.name %></div>
+        </div>
+      
+        <div class="image-container" id="timetableImageContainer">
+          <!-- Timetable Image will be shown here -->
+          <img id="timetableImage" src="" alt="No timetable uploaded yet" style="display: none;">
+          <span id="placeholderText" style="color: #aaa; font-size: 1.2rem;">No Timetable Available</span>
+        </div>
+      
+      </div>
+    </div>
+    <!----------------------------------------Attendance----------------------------------------------------------------------------->
+  <div id="attendance" class="page">  
+    <div class="container7">
+      <h1>Mark Attendance</h1>
+    
+      <form method="GET" action="/attendance">
+        <div class="top-bar">
+          <label for="classSelected">Class:</label>
+          <select name="classSelected" id="classSelected" required>
+            <option value="">--Choose Class--</option>
+            <option value="1st" <% if (classSelected === '1st') { %> selected <% } %>>1st</option>
+            <option value="2nd" <% if (classSelected === '2nd') { %> selected <% } %>>2nd</option>
+            <option value="3rd" <% if (classSelected === '3rd') { %> selected <% } %>>3rd</option>
+            <option value="4th" <% if (classSelected === '4th') { %> selected <% } %>>4th</option>
+            <option value="5th" <% if (classSelected === '5th') { %> selected <% } %>>5th</option>
+          </select>
+    
+          <label for="date">Date:</label>
+          <input type="date" name="date" id="date" value="<%= date || '' %>" required>
+    
+          <button type="submit">Fetch</button>
+        </div>
+      </form>
+    
+      <% if (classSelected && date) { %>
+        <% if (message) { %>
+          <p class="message"><%= message %></p>
+        <% } %>
+    
+        <% if (students && students.length > 0) { %>
+          <h2>Class: <%= classSelected %> | Date: <%= date %></h2>
+    
+          <form method="POST" action="/attendance">
+            <input type="hidden" name="classSelected" value="<%= classSelected %>">
+            <input type="hidden" name="date" value="<%= date %>">
+    
+            <div class="student-grid">
+              <% students.forEach(student => { %>
+                <div class="student-card" data-roll="<%= student.rollNo %>" data-present="1">
+                  <input type="hidden" name="attendance[<%= student.rollNo %>]" value="1" />
+                  <div class="student-name"><%= student.fullName %></div>
+                  <div class="student-roll">Roll No: <%= student.rollNo %></div>
+                </div>
+              <% }) %>
+            </div>
+    
+            <br>
+            <button type="submit">Submit Attendance</button>
+          </form>
+        <% } %>
+      <% } %>
+    </div>
+  </div>  
+    
+
+<!----------------------------------------------Marks-------------------------------------------------------------------- -->
+    <div id="marks" class="page">
+      <div class="mark-container">
+        <div class="form-container">
+          <h2>Enter Student Marks</h2>
+        
+          <form id="marksForm">
+            <div>
+              <label for="classSelect">Select Class</label>
+              <select id="classSelect" required>
+                <option value="">-- Select Class --</option>
+                <option value="Class 1">Class 1</option>
+                <option value="Class 2">Class 2</option>
+                <option value="Class 3">Class 3</option>
+                <option value="Class 4">Class 4</option>
+                <option value="Class 5">Class 5</option>
+              </select>
+            </div>
+        
+            <div>
+              <label for="studentSelect">Select Student</label>
+              <select id="studentSelect" name="studentSelect" required>
+                <option value="">Loading students...</option>
+              </select>
+            </div>
+        
+            <div class="marks-section">
+              <label>Internal Marks (Max 50)</label>
+              <div class="subject-group">
+                <input type="number" name="internal_english" placeholder="English" min="0" max="50" required>
+                <input type="number" name="internal_maths" placeholder="Maths" min="0" max="50" required>
+                <input type="number" name="internal_science" placeholder="Science" min="0" max="50" required>
+              </div>
+        
+              <label>Midterm Marks (Max 50)</label>
+              <div class="subject-group">
+                <input type="number" name="midterm_english" placeholder="English" min="0" max="50" required>
+                <input type="number" name="midterm_maths" placeholder="Maths" min="0" max="50" required>
+                <input type="number" name="midterm_science" placeholder="Science" min="0" max="50" required>
+              </div>
+        
+              <label>End Term Marks (Max 100)</label>
+              <div class="subject-group">
+                <input type="number" name="endterm_english" placeholder="English" min="0" max="100" required>
+                <input type="number" name="endterm_maths" placeholder="Maths" min="0" max="100" required>
+                <input type="number" name="endterm_science" placeholder="Science" min="0" max="100" required>
+              </div>
+            </div>
+        
+            <button type="submit">Submit Marks</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goBack() {
+      window.location.replace("http://localhost:3000");
+    }
+  </script>
+</body>
+</html>

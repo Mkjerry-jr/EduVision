@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BEO</title>
+  <link rel="stylesheet" href="/beo-style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="back-button1" onclick="goBack()">
+        <img src="https://cdn-icons-png.flaticon.com/512/545/545680.png" alt="Back" style="width:20px;height:20px;">
+      </div>
+      BEO
+    </div>
+
+    <div class="button" onclick="showPage('home')">Home</div>
+    <div class="button" onclick="showPage('School')">School</div>
+    <div class="button" onclick="showPage('Food')">Food</div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <div id="home" class="page active">
+      <div class="container1">
+        <div class="profile-row">
+          <div class="profile-photo">H</div>
+          <div class="profile-info">
+              <p><strong>BEO Name:</strong> John Doe</p>
+              <p><strong>BEO ID:</strong> SCH12345</p>
+          </div>
+        </div>
+      
+        <div class="tag-container">
+          <div class="counter-card4">
+              <h2 id="clusterCount">4</h2>
+              <p>Number of Cluster</p>
+          </div>
+          <div class="counter-card1">
+            <h2 id="schoolsCount">0</h2>
+            <p>Number of Schools</p>
+          </div>
+          <div class="counter-card2">
+            <h2 id="studentsCount">0</h2>
+            <p>Total Students</p>
+          </div>
+          <div class="counter-card3">
+            <h2 id="teachersCount">0</h2>
+            <p>Total Teachers</p>
+          </div>
+          
+        </div>
+      
+      </div>
+    </div>
+    <!--------------------------------------------school------------------------------------------------------------------>
+    <div id="School" class="page">
+      <div class="container2">
+        <div class="container">
+          <div class="cluster" onclick="showSchools('north')">North Bengaluru</div>
+          <div class="cluster" onclick="showSchools('west')">West Bengaluru</div>
+          <div class="cluster" onclick="showSchools('east')">East Bengaluru</div>
+          <div class="cluster" onclick="showSchools('south')">South Bengaluru</div>
+        </div>
+      
+        <div id="school-list" class="school-list" style="display: none;">
+          <h3>Schools in the selected cluster:</h3>
+          <div id="schools"></div>
+        </div>
+      
+        <div id="school-details" class="school-details">
+          <h3>School Details</h3>
+          <div id="details"></div>
+          <button class="back-button" onclick="backToSchools()">Back to Schools</button>
+        </div>
+      
+      </div>
+    </div>
+    <div id="Food" class="page">
+      <div class="container3">
+        <h2 style="text-align: center; color: #333;">Mid-Day Meal Allocation</h2>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px;">
+      
+          <div style="background: #d1e7dd; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0;">Monday</h3>
+            <p style="margin: 5px 0;">Rice, Dal, Vegetables</p>
+          </div>
+      
+          <div style="background: #d1e7dd; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0;">Tuesday</h3>
+            <p style="margin: 5px 0;">Chapati, Sabji, Banana</p>
+          </div>
+      
+          <div style="background: #d1e7dd; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0;">Wednesday</h3>
+            <p style="margin: 5px 0;">Rice, Sambar, Egg</p>
+          </div>
+      
+          <div style="background: #d1e7dd; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0;">Thursday</h3>
+            <p style="margin: 5px 0;">Upma, Chutney, Fruit</p>
+          </div>
+      
+          <div style="background: #d1e7dd; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0;">Friday</h3>
+            <p style="margin: 5px 0;">Khichdi, Curd</p>
+          </div>
+      
+          <div style="background: #f8d7da; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0; color: #842029;">Saturday</h3>
+            <p style="margin: 5px 0;">Holiday</p>
+          </div>
+      
+          <div style="background: #f8d7da; padding: 15px; width: 200px; text-align: center; border-radius: 8px;">
+            <h3 style="margin: 5px 0; color: #842029;">Sunday</h3>
+            <p style="margin: 5px 0;">Holiday</p>
+          </div>
+      
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goBack() {
+      alert("Go Back clicked");
+      // Implement custom back navigation if needed
+    }
+
+
+    // Example: dynamically populate counters
+    document.getElementById('schoolsCount').innerText = 42;
+    document.getElementById('studentsCount').innerText = 1500;
+    document.getElementById('teachersCount').innerText = 80;
+    document.getElementById('clusterCount').innerText = 4;
+    
+    
+
+
+    const schoolData = {
+      north: [
+        <% BEO.forEach(beo => { %>
+        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
+      <% }) %>
+      ],
+      west: [
+      <% BEO.forEach(beo => { %>
+        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
+      <% }) %>
+      ],
+      east: [
+      <% BEO.forEach(beo => { %>
+        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
+      <% }) %>
+      ],
+      south: [
+      <% BEO.forEach(beo => { %>
+        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
+      <% }) %>
+      ],
+    };
+
+    function showSchools(cluster) {
+      const schoolListContainer = document.getElementById('school-list');
+      const schoolsDiv = document.getElementById('schools');
+      const schoolDetailsContainer = document.getElementById('school-details');
+      const detailsDiv = document.getElementById('details');
+      
+      // Clear the previous school list and details
+      schoolsDiv.innerHTML = '';
+      detailsDiv.innerHTML = '';
+      schoolDetailsContainer.style.display = 'none';
+
+      // Populate the school list based on the selected cluster
+      const schools = schoolData[cluster];
+      schools.forEach(school => {
+        const schoolItem = document.createElement('div');
+        schoolItem.classList.add('school-item');
+        schoolItem.textContent = school.name;
+        schoolItem.onclick = () => showSchoolDetails(school); // Add click listener to show school details
+        schoolsDiv.appendChild(schoolItem);
+      });
+
+      // Show the school list section
+      schoolListContainer.style.display = 'block';
+    }
+
+    function showSchoolDetails(school) {
+      const schoolDetailsContainer = document.getElementById('school-details');
+      const detailsDiv = document.getElementById('details');
+      
+      // Display the school details
+      detailsDiv.innerHTML = `<strong>Name:</strong> ${school.name}<br><strong>Details:</strong> ${school.details}`;
+      
+      // Hide the school list and show the details section
+      document.getElementById('school-list').style.display = 'none';
+      schoolDetailsContainer.style.display = 'block';
+    }
+
+    function backToSchools() {
+      // Hide the school details and show the school list again
+      document.getElementById('school-details').style.display = 'none';
+      document.getElementById('school-list').style.display = 'block';
+    }
+
+    function goBack() {
+      window.location.replace("http://localhost:3000");
+    }
+
+
+
+
+
+    
+  </script>
+</body>
+</html>

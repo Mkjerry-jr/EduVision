@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cluster Head</title>
+  <link rel="stylesheet" href="/cluster-style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="back-button" onclick="goBack()">
+        <img src="https://cdn-icons-png.flaticon.com/512/545/545680.png" alt="Back" style="width:20px;height:20px;">
+      </div>
+      Cluster Head
+    </div>
+
+    <div class="button" onclick="showPage('home')">Home</div>
+    <div class="button" onclick="showPage('school')">School</div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <div id="home" class="page active">
+      <div class="container1">
+        <div class="profile-row">
+          <div class="profile-photo">H</div>
+          <div class="profile-info">
+              <p><strong>Cluster  Name:</strong> John Doe</p>
+              <p><strong>Cluster ID:</strong> <%= head.sid %></p>
+          </div>
+        </div>
+      
+        <div class="container">
+          <div class="counter-card1">
+            <h2 id="schoolsCount"><%= schoolCount %></h2>
+            <p>Number of Schools</p>
+          </div>
+          <div class="counter-card2">
+            <h2 id="studentsCount"><%= nostuds %></h2>
+            <p>Total Students</p>
+          </div>
+          <div class="counter-card3">
+            <h2 id="teachersCount"><%= head.Noteach %></h2>
+            <p>Total Teachers</p>
+          </div>
+          <div class="counter-card4">
+            <h2 id="projectsCount">0</h2>
+            <p>Active Projects</p>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+    <div id="school" class="page">
+      <div class="main-container">
+
+        <!-- Navigation Panel -->
+        <div class="left-panel">
+          <h2>Available Schools</h2>
+          <div class="scrollable-links">
+            <% schoolDetails.forEach((school, i) => { %>
+              <a href="javascript:void(0)" 
+                 onclick="showDetails('<%= i %>')"
+                 class="school-link">
+                <%= school.sname %>
+              </a>
+            <% }) %>
+          </div>
+        </div>
+    
+        <!-- Content Panel -->
+        <div class="right-panel">
+
+            <% schoolDetails.forEach((school, i) => { %>
+              <div id="school-detail-<%= i %>" class="school-detail" style="display: none;">
+                <h1><%= school.sname %></h1>
+                <p><strong>Head:</strong> <%= school.hname %></p>
+                <p><strong>Location:</strong> <%= school.Address %></p>
+                <p><strong>Number of Students:</strong> <%= school.Nostud %></p>
+                <p><strong>Number of Teachers:</strong> <%= school.Noteach %></p>
+                <p><strong>Number of Tribal Students:</strong> <%= school.NoTribal %></p>
+                <p><strong>Number of Other Staff:</strong> <%= school.NoOther %></p>
+              </div>
+            <% }) %>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goBack() {
+      window.location.replace("http://localhost:3000");
+    }
+
+
+
+
+    function showDetails(schoolId) {
+  // Hide all school details
+  const allDetails = document.querySelectorAll('.school-detail');
+  allDetails.forEach(detail => detail.style.display = 'none');
+  
+  // Show the selected school detail
+  const selectedDetail = document.getElementById('school-detail-' + schoolId);
+  if (selectedDetail) {
+    selectedDetail.style.display = 'block';
+  }
+}
+
+// Show the first school by default when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.querySelectorAll('.school-detail').length > 0) {
+    showDetails('0');
+  }
+});
+
+// Show first school by default
+showDetails(1);// Show first school on load    
+  
+  </script>
+</body>
+</html>

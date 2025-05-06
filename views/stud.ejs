@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Login</title>
+  <link rel="stylesheet" href="/stud-style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="back-button" onclick="goBack()">
+        <img src="https://cdn-icons-png.flaticon.com/512/545/545680.png" alt="Back" style="width:20px;height:20px;">
+      </div>
+      Student
+    </div>
+
+    <div class="button" onclick="showPage('home')">Home</div>
+    <div class="button" onclick="showPage('timetable')">Timetable</div>
+    <div class="button" onclick="showPage('attendance')">Attendance</div>
+    <div class="button" onclick="showPage('health')">Health</div>
+    <div class="button" onclick="showPage('marks')">Marks</div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+
+  <!----------------------------Home Page -------------------------------------->  
+    <div id="home" class="page active">
+      <div class="container">
+        <div class="header">Welcome Student</div><!-- Header -->
+        <div id="tribalBadge" class="tribal-status">Tribal</div><!-- Tribal Badge -->
+        <!-- First Row: Profile + Class + DOB -->
+        <div class="info-grid">
+          <div class="profile-section">
+            <div class="profile-photo">👤</div>
+            <div class="profile-info">
+              <div ><strong>Name: </strong><%= student.fullName %></div>
+              <div><strong>Roll No:</strong><%= student.rollNo %></div>
+            </div>
+          </div>
+      
+          <div class="info-item">
+            <strong>Class: </strong><%= student.classy %>
+          </div>
+      
+          <div class="info-item">
+            <strong>DOB:</strong> <%= formattedDate %>
+          </div>
+      
+        </div>
+      
+        <!-- Father's Details -->
+        <div class="section-card">
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Father's Name: </strong><%= student.fatherName %>
+            </div>
+            <div class="info-item">
+              <strong>Father's Occupation:</strong><%= student.fatherOccupation %>
+            </div>
+            <div class="info-item">
+              <strong>Father's Mobile:</strong><%= student.fatherPhone %>
+            </div>
+            <div class="info-item">
+              <strong>Father's Email:</strong><%= student.fatherEmail %>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Mother's Details -->
+        <div class="section-card">
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Mother's Name:</strong><%= student.motherName %>
+            </div>
+            <div class="info-item">
+              <strong>Mother's Occupation:</strong><%= student.motherOccupation %>
+            </div>
+            <div class="info-item">
+              <strong>Mother's Mobile:</strong><%= student.motherPhone %>
+            </div>
+            <div class="info-item">
+              <strong>Mother's Email:</strong><%= student.motherEmail %>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Other Details -->
+        <div class="section-card">
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Caste:</strong><%= student.caste %>
+            </div>
+            <div class="info-item full-width">
+              <strong>Address:</strong><%= student.address %>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+      
+    </div>
+    <!-----------------------------------Time Table------------------------------------------->
+    <div id="timetable" class="page">
+      <div class="container1">
+        <h1 class="tt">Timetable</h1>
+        <div class="info-grid1">
+          <div class="info-item">Class: <span id="class-name" style="margin-left:10px;"><%= student.classy %></span></div>
+          <div class="info-item">Class Teacher: <span id="class-teacher" style="margin-left:10px;">Mr. Sharma</span></div>
+        </div>
+      
+        <div class="image-container" id="timetableImageContainer">
+          <!-- Timetable Image will be shown here -->
+          <img id="timetableImage" src="" alt="No timetable uploaded yet" style="display: none;">
+          <span id="placeholderText" style="color: #aaa; font-size: 1.2rem;">No Timetable Available</span>
+        </div>
+      
+      </div>
+    </div>
+    <!-----------------------------------Attendance------------------------------------------->
+    <div id="attendance" class="page">
+      <div class="attendance-container">
+      <div class="container2">
+        <h1>Attendance</h1>
+      
+        <div class="summary" id="attendanceSummary">
+          <!-- Attendance summary will appear here -->
+        </div>
+      </div>
+      </div>
+    </div>
+    <!-----------------------------------Health------------------------------------------->
+    <div id="health" class="page">
+      <div class="heath-container">
+      <div class="container3">
+        <h1 class="title">Student Medical Record</h1>
+        <div class="card">
+          
+          <div class="student-info">
+            <div class="info-group">
+              <label>Name: </label>
+              <%= student.fullName %>
+            </div>
+            <div class="info-group">
+              <label>Class:</label>
+              <%= student.classy %>
+            </div>
+            <div class="info-group">
+              <label>Age:</label>
+              <%= age %>
+            </div>
+            <div class="info-group">
+              <label>Blood Group:</label>
+              <%= student.bloodGroup %>
+            </div>
+          </div>
+      
+          <div class="medical-info">
+            <div class="info-group">
+              <label>Height:</label>
+              <p><%= student.height %> cms</p>
+            </div>
+            <div class="info-group">
+              <label>Weight:</label>
+              <p><%= student.weight %> kg</p>
+            </div>
+            <div class="bmi-group 
+                <%= bmiStatus === 'Underweight' ? 'underweight' : '' %>
+                <%= bmiStatus === 'Normal' ? 'healthy' : '' %>
+                <%= bmiStatus === 'Overweight' ? 'overweight' : '' %>
+              <%= bmiStatus === 'Obese' ? 'obese' : '' %>">
+    <label>BMI Status:</label>
+    <span><%= bmiStatus %> : <%= bmi %></span>
+</div>
+
+          </div> 
+        </div>
+      </div>
+      </div>
+    </div>
+    <!-----------------------------------Marks------------------------------------------->
+    <div id="marks" class="page">
+      <div class="mark-container">
+      <div class="container4">
+        <div class="header4">
+          <!-- Student Name and Class Box -->
+          <div class="info-box">
+            <p><strong>Student Name:</strong> <%= student.fullName %></p>
+            <p><strong>Class:</strong> <%= student.classy %></p>
+          </div>
+        </div>
+      
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Exam</th>
+                <th>Maths</th>
+                <th>Science</th>
+                <th>English</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Internal</td>
+                <td>70</td>
+                <td>75</td>
+                <td>72</td>
+              </tr>
+              <tr>
+                <td>Mid Term</td>
+                <td>78</td>
+                <td>85</td>
+                <td>80</td>
+              </tr>
+              <tr>
+                <td>End Term</td>
+                <td>88</td>
+                <td>92</td>
+                <td>86</td>
+              </tr>
+              <!-- Empty row for spacing -->
+              <tr class="total-row">
+                  <td>Total</td>
+                  <td>157/200</td>
+                  <td>167/200</td>
+                  <td>165/200</td>
+              </tr>
+              <!-- Result Row -->
+              <tr class="result-row">
+                <td colspan="4">Result: Passed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goBack() {
+      window.location.replace("http://localhost:3000");
+    }
+
+    /*-------------------Js for Attendance-------------------------*/
+    // Example attendance records
+  const attendanceRecords = [
+    { status: "Present" },
+    { status: "Absent" },
+    { status: "Present" },
+    { status: "Present" },
+    { status: "Absent" },
+    { status: "Present" }
+  ];
+
+  const attendanceSummary = document.getElementById('attendanceSummary');
+
+  const totalDays = attendanceRecords.length;
+  const daysAttended = attendanceRecords.filter(r => r.status === 'Present').length;
+  const daysAbsent = totalDays - daysAttended;
+  const attendancePercentage = ((daysAttended / totalDays) * 100).toFixed(2);
+
+  attendanceSummary.innerHTML = `
+    <div class="summary-item">
+      Total Days Attended: <span class="highlight">${daysAttended}</span>
+    </div>
+    <div class="summary-item">
+      Total Days Absent: <span class="highlight">${daysAbsent}</span>
+    </div>
+    <div class="summary-item">
+      Attendance Percentage: <span class="highlight">${attendancePercentage}%</span>
+    </div>
+  `;
+
+  </script>
+</body>
+</html>

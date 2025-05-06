@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Head Login</title>
+  <link rel="stylesheet" href="./head-style.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <div class="back-button" onclick="goBack()">
+        <img src="https://cdn-icons-png.flaticon.com/512/545/545680.png" alt="Back" style="width:20px;height:20px;">
+      </div>
+      Head
+    </div>
+
+    <div class="button" onclick="showPage('home')">Home</div>
+    <div class="button" onclick="showPage('sl')">Student List</div>
+    <div class="button" onclick="showPage('tl')">Teacher List</div>
+    <div class="button" onclick="showPage('tribal')">Tribal Students</div>
+    <div class="button" onclick="showPage('Doctor')">Doctor</div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <!-----------------------------------------Home------------------------------------------------------------->
+    <div id="home" class="page active">
+      <div class="profile-row">
+        <div class="profile-photo">H</div>
+        <div class="profile-info">
+          <p><strong>Head Name:</strong> <%= head.hname %></p>
+          <p><strong>School ID:</strong> <%= head.sid %></p>
+          <p><strong>School Name:</strong> <%= head.sname %></p>
+          <p><strong>Address:</strong> <%= head.Address %></p>
+        </div>
+      </div>
+    
+      <div class="container">
+        <div class="counter-card1">
+          <h2 id="schoolsCount"><%= head.Nostud %></h2>
+          <p>Total Students</p>
+        </div>
+        <div class="counter-card2">
+          <h2 id="count"><%= head.Noteach %></h2>
+          <p>Total Teachers</p>
+        </div>
+        <div class="counter-card3">
+          <h2 id="count"><%= head.NoOther %></h2>
+          <p>Other Staffs</p>
+        </div>
+        <div class="counter-card4">
+          <h2 id="count"><%= head.NoTribal %></h2>
+          <p>Tribal students</p>
+        </div>
+      </div>
+    
+      <form action="/upload-timetables" method="post" enctype="multipart/form-data">
+        <div class="timetable-upload-section">
+          <h2>Add Timetable to Classes</h2>
+        <div class="upload-row">
+          <div class="upload-col">
+            <label class="upload-btn">
+              📤 Upload Class 1
+              <input type="file" name="class1_timetable" accept="image/*">
+            </label>
+          </div>
+          <div class="upload-col">
+            <label class="upload-btn">
+              📤 Upload Class 2
+              <input type="file" name="class2_timetable" accept="image/*">
+            </label>
+          </div>
+          <div class="upload-col">
+            <label class="upload-btn">
+              📤 Upload Class 3
+              <input type="file" name="class3_timetable" accept="image/*">
+            </label>
+          </div>
+          <div class="upload-col">
+            <label class="upload-btn">
+              📤 Upload Class 4
+              <input type="file" name="class4_timetable" accept="image/*">
+            </label>
+          </div>
+          <div class="upload-col">
+            <label class="upload-btn">
+              📤 Upload Class 5
+              <input type="file" name="class5_timetable" accept="image/*">
+            </label>
+          </div>
+          <div class="upload-col">
+            <label class="upload-btn">
+              📤 Upload Teacher TimeTable
+              <input type="file" name="teacher_timetable" accept="image/*">
+            </label>
+          </div>
+        </div>
+        </div>
+        
+      </form>
+      </div>    
+
+    <!-----------------------------------------Student List------------------------------------------------------------->
+    <div id="sl" class="page">
+      <div class="student-container">
+        <div class="container1">
+          <h3>New Student Registration</h3>
+          <form id="studentForm" action="/submit" method="POST" enctype="multipart/form-data">
+            <div class="form-grid">
+      
+              <!-- Row 1 -->
+              <div class="span-2">
+                <label for="fullName">Full Name:</label>
+                <input type="text" name="fullName" required>
+              </div>
+              <div>
+                <label for="rollNo">Roll No:</label>
+                <input type="text" name="rollNo" required>
+              </div>
+              <div>
+                <label for="profilePic">Profile Picture:</label>
+                <input type="file" name="profilePic" accept="image/*">
+              </div>
+              
+      
+              <!-- Row 2 -->
+              <div>
+                <label for="height">Height (ft):</label>
+                <input type="number" name="height" step="0.1" required>
+              </div>
+              <div>
+                <label for="weight">Weight (kg):</label>
+                <input type="number" name="weight" required>
+              </div>
+              <div>
+                <label for="bloodGroup">Blood Group:</label>
+                <select name="bloodGroup" required>
+                  <option value="">Select</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+              <div>
+                <label>Sex:</label>
+                <div class="radio-group">
+                  <input type="radio" name="sex" value="Male" id="male" required hidden>
+                  <label class="radio-btn" for="male">Male</label>
+              
+                  <input type="radio" name="sex" value="Female" id="female" hidden>
+                  <label class="radio-btn" for="female">Female</label>
+                </div>
+              </div>
+      
+              <!-- Row 3 -->
+              <div>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" name="dob" required>
+              </div>
+
+              <div>
+                <label for="classy">Class:</label>
+                <select name="classy" required>
+                  <option value="1">Class 1</option>
+                  <option value="2">Class 2</option>
+                  <option value="3">Class 3</option>
+                  <option value="4">Class 4</option>
+                  <option value="5">Class 5</option>
+                </select>
+              </div>
+              
+              <div>
+                <label for="caste">Caste:</label>
+                <select name="caste" required>
+                  <option value="">Select</option>
+                  <option value="General">General</option>
+                  <option value="OBC">OBC</option>
+                  <option value="SC">SC</option>
+                  <option value="ST">ST</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label>Tribal:</label>
+                <div class="radio-group">
+                  <input type="radio" name="tribal" value="Yes" id="tribal-yes" required hidden>
+                  <label class="radio-btn" for="tribal-yes">Yes</label>
+              
+                  <input type="radio" name="tribal" value="No" id="tribal-no" hidden>
+                  <label class="radio-btn" for="tribal-no">No</label>
+                </div>
+              </div>
+      
+              <!-- Row 4: Father's Details -->
+              <div>
+                <label for="fatherName">Father’s Name:</label>
+                <input type="text" name="fatherName" required>
+              </div>
+              <div>
+                <label for="fatherOccupation">Father’s Occupation:</label>
+                <input type="text" name="fatherOccupation" required>
+              </div>
+              <div>
+                <label for="fatherPhone">Father’s Phone Number:</label>
+                <input type="tel" name="fatherPhone" required>
+              </div>
+              <div>
+                <label for="fatherEmail">Father’s Email:</label>
+                <input type="email" name="fatherEmail" required>
+              </div>
+      
+              <!-- Row 5: Mother's Details -->
+              <div>
+                <label for="motherName">Mother’s Name:</label>
+                <input type="text" name="motherName" required>
+              </div>
+              <div>
+                <label for="motherOccupation">Mother’s Occupation:</label>
+                <input type="text" name="motherOccupation" required>
+              </div>
+              <div>
+                <label for="motherPhone">Mother’s Phone Number:</label>
+                <input type="tel" name="motherPhone" required>
+              </div>
+              <div>
+                <label for="motherEmail">Mother’s Email:</label>
+                <input type="email" name="motherEmail" required>
+              </div>
+      
+              <!-- Address -->
+              <div class="full-width">
+                <label for="address">Address:</label>
+                <textarea name="address" required></textarea>
+              </div>
+      
+              <!-- Submit -->
+              <div class="full-width button-container">
+                <button id="nig" type="submit">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      </div>
+      
+    <!-----------------------------------------Teacher List------------------------------------------------------------->
+    <div id="tl" class="page">
+      <div class="teacher-container">
+        <div class="container1">
+            <h3>New Teacher Registration
+              <div class="space"></div>
+            </h3>
+            <form id="teacherForm" action="/Tsubmit" method="POST">
+                <div class="form-grid">
+    
+                    <!-- Name (2 cols), School ID, TID -->
+                    <div class="span-2">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter Full Name" required>
+                    </div>
+                    <div>
+                        <label for="sid">School ID:</label>
+                        <input type="number" id="sid" name="sid" required readonly>
+                    </div>
+                    <div>
+                        <label for="tid">TID:</label>
+                        <input type="number" id="tid" name="tid" required>
+                    </div>
+    
+                    <!-- Education, DOB, Blood Group, Sex -->
+                    <div>
+                        <label for="education">Education:</label>
+                        <select id="education" name="education" required>
+                            <option value="">Select</option>
+                            <option value="B.Ed">B.Ed</option>
+                            <option value="M.Ed">M.Ed</option>
+                            <option value="PhD">PhD</option>
+                            <option value="M.Sc">M.Sc</option>
+                            <option value="MA">MA</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    <div>
+                        <label for="bloodgroup">Blood Group:</label>
+                        <select id="bloodgroup" name="bloodgroup" required>
+                            <option value="">Select</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Sex:</label>
+                        <div class="radio-group">
+                            <input type="radio" id="male" name="sex" value="Male" hidden required>
+                            <label for="male" class="radio-btn">Male</label>
+    
+                            <input type="radio" id="female" name="sex" value="Female" hidden>
+                            <label for="female" class="radio-btn">Female</label>
+                        </div>
+                    </div>
+    
+                    <!-- Experience, Domain, Mobile, Email -->
+                    <div>
+                        <label for="experience">Experience (Years):</label>
+                        <input type="number" id="experience" name="experience" min="0" required>
+                    </div>
+                    <div>
+                        <label for="domain">Domain:</label>
+                        <select id="domain" name="domain" required>
+                            <option value="">Select</option>
+                            <option value="English">English</option>
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="mobile">Mobile No.:</label>
+                        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+                    </div>
+                    <div>
+                        <label for="email">Email ID:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+    
+                    <!-- Address (4 cols) -->
+                    <div class="full-width">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" placeholder="Enter Address" required>
+                    </div>
+                    
+                    
+                    <!-- Submit Button -->
+                    <div class="space"></div>
+                    <div class="full-width button-container">
+                        <button type="submit">Submit</button>
+                    </div>
+    
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    </div>
+    <!-----------------------------------------Tribal------------------------------------------------------------->
+ 
+    <div id="tribal" class="page">
+      <div class="tribal-container">
+
+<div class="actions">
+  <button id="btn" onclick="assign()">Assign</button>
+  <button id="btn"onclick="shuffle()">Shuffle</button>
+</div>
+
+<div class="container8">
+  <!-- Members Column -->
+  <div class="column" id="membersColumn">
+    <h2>Tribal Students</h2>
+    <ul id="members"></ul>
+  </div>
+
+  <!-- Team Leaders Column -->
+  <div class="column" id="leadersColumn">
+    <h2>Teachers (11)</h2>
+    <ul id="leaders"></ul>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+</script>
+
+
+    <!-----------------------------------------Doctor------------------------------------------------------------->
+    <div id="Doctor" class="page">
+      <div class="Doctor-container">
+        <div class="container3">
+
+          <!-- Health Reports Charts -->
+          <div class="chart-section">
+            <h3>Students Health Reports</h3>
+            <div class="charts">
+      
+              <!-- BMI Chart -->
+              <div class="chart-container">
+                <h4>BMI Report</h4>
+                <canvas id="bmiChart"></canvas>
+                <div class="chart-labels">
+                  <div><span class="color-box" style="background-color: #36A2EB;"></span> Underweight</div>
+                  <div><span class="color-box" style="background-color: #4CAF50;"></span> Healthy</div>
+                  <div><span class="color-box" style="background-color: #FFC107;"></span> Overweight</div>
+                  <div><span class="color-box" style="background-color: #FF5722;"></span> Obese</div>
+                </div>
+              </div>
+      
+              <!-- Blood Group Chart -->
+              <div class="chart-container">
+                <h4>Blood Group Distribution</h4>
+                <canvas id="bloodChart"></canvas>
+                <div class="chart-labels">
+                  <div><span class="color-box" style="background-color: #FF6384;"></span> A+</div>
+                  <div><span class="color-box" style="background-color: #36A2EB;"></span> B+</div>
+                  <div><span class="color-box" style="background-color: #FFCE56;"></span> O+</div>
+                  <div><span class="color-box" style="background-color: #4BC0C0;"></span> AB+</div>
+                </div>
+              </div>
+      
+            </div>
+          </div>
+      
+          <!-- Extras Section -->
+          <div class="extras">
+      
+            <div class="health-alerts">
+              <h3>Health Alerts</h3>
+              <p>⚠️ <strong>3 students</strong> are Underweight.</p>
+              <p>⚠️ <strong>2 students</strong> are Obese.</p>
+            </div>
+      
+            <div class="notes">
+              <h2>Doctor's Quick Notes</h2>
+              <textarea placeholder="Write health observations..."></textarea>
+              <div>
+                <input type="date" id="noteDate">
+                <button>Submit</button>
+              </div>
+            </div>
+      
+          </div>
+      
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Load your separate JS file -->
+<script src="./doctorCharts.js"></script>
+<script>
+  function showPage(id) {
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => page.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  const members = Array.from({ length: 6 }, (_, i) => ({ name: `Student ${i + 1}`, assigned: false }));
+  const leaders = Array.from({ length: 11 }, (_, i) => ({ name: `Teacher ${i + 1}`, team: [] }));
+  let shuffledMembers = [...members]; // Used by assign() after shuffle()
+
+  // Function to render members and leaders
+  function render() {
+    const membersList = document.getElementById('members');
+    const leadersList = document.getElementById('leaders');
+    membersList.innerHTML = '';
+    leadersList.innerHTML = '';
+
+    // Render Members
+    members.forEach(member => {
+      const className = member.assigned ? 'assigned' : 'unassigned';
+      membersList.innerHTML += `<li class="user ${className}">${member.name}</li>`;
+    });
+
+    // Render Leaders
+    leaders.forEach(leader => {
+      const isAvailable = leader.team.length === 0;
+      const className = isAvailable ? 'unassigned' : 'assigned';
+      const teamList = leader.team.map(m => m.name).join(', ') || 'Available';
+      leadersList.innerHTML += `
+        <li class="user ${className}">
+          <strong>${leader.name}</strong><br>
+          <small>${teamList}</small>
+        </li>`;
+    });
+  }
+
+  // Function to assign members to leaders
+  function assign() {
+    leaders.forEach(l => l.team = []);
+    members.forEach(m => m.assigned = false);
+
+    let index = 0;
+    for (let leader of leaders) {
+      leader.team = shuffledMembers.slice(index, index + 4);
+      leader.team.forEach(m => m.assigned = true);
+      index += 4;
+      if (index >= shuffledMembers.length) break;
+    }
+
+    render();
+  }
+
+  // Function to shuffle members before assignment
+  function shuffle() {
+    shuffledMembers = [...members];
+    for (let i = shuffledMembers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledMembers[i], shuffledMembers[j]] = [shuffledMembers[j], shuffledMembers[i]];
+    }
+
+    // Reset previous assignments
+    leaders.forEach(l => l.team = []);
+    members.forEach(m => m.assigned = false);
+
+    render(); // Update UI with unassigned (red) states
+  }
+
+  render(); // Initial render
+
+}
+</script>
+</body>
+</html>

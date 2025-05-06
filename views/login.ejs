@@ -1,0 +1,343 @@
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduVision</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/images/login-cover.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            padding-right: 50px;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Wrapper Box */
+        .wrapper {
+            width: 300px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active {
+            display: block;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: black;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+        }
+
+        h1, p, label, a {
+            color: black;
+        }
+        h2 {
+            color: white;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .inputbox {
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .inputbox input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            color: black;
+            font-size: 14px;
+        }
+
+        .inputbox i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: black;
+        }
+
+        .Remember, .register {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .Remember a, .register a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Role Selection -->
+    <div class="wrapper active" id="roleSelection">
+        <h2>Select Role</h2>
+        <button type="button" class="btn" onclick="openPage('admin')">Admin</button>
+        <button type="button" class="btn" onclick="redirectTo('/teacher')">Teacher</button>
+        <button type="button" class="btn" onclick="redirectTo('/student')">Student</button>
+    </div>
+
+    <!-- Admin Options -->
+    <div class="wrapper" id="adminOptions">
+        <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+        <h2>Admin Options</h2>
+        <button type="button" class="btn" onclick="redirectTo('/beo')">BEO</button>
+        <button type="button" class="btn" onclick="redirectTo('/cluster')">Cluster Head</button>
+        <button type="button" class="btn" onclick="redirectTo('/head')">Head</button>
+    </div>
+
+    <!-- Login Form -->
+<!-- Student Login Form -->
+<div class="wrapper" id="studentLoginForm">
+    <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+    <form action="/student" id="studentLogin" method="POST">
+        <h1>Student Login</h1>
+        <div class="inputbox">
+            <input type="text" name="username"  id="login-usr" placeholder="Username" required>
+            <i class='bx bx-user'></i>
+        </div>
+        <div class="inputbox">
+            <input type="password" name="password" id="login-pswd" placeholder="Password" required>
+            <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="Remember">
+            <label><input type="checkbox"> Remember Me</label>
+            <a href="#">Forget Password?</a>
+        </div>
+        <div>
+            <button type="submit" onclick="submitStudent()" class="btn">Login</button>
+        </div>
+        <div class="register">
+            <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+    </form>    
+</div>
+
+<!-- Teacher Login Form -->
+<div class="wrapper" id="teacherLoginForm">
+    <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+    <form action="/teacher" method="POST">
+        <h1>Teacher Login</h1>
+        <div class="inputbox">
+            <input type="text" name="username" id="u_teacher" placeholder="Username" required>
+            <i class='bx bx-user'></i>
+        </div>
+        <div class="inputbox">
+            <input type="password" name="password" id="pwd_teacher" placeholder="Password" required>
+            <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="Remember">
+            <label><input type="checkbox"> Remember Me</label>
+            <a href="#">Forget Password?</a>
+        </div>
+        <div>
+            <button type="submit" class="btn">Login</button>
+        </div>
+        <div class="register">
+            <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+    </form>    
+</div>
+
+<!-- Head Login Form -->
+<div class="wrapper" id="headLoginForm">
+    <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+    <form action="/head" method="POST">
+        <h1>Head Login</h1>
+        <div class="inputbox">
+            <input type="text" name="username" placeholder="Username" required>
+            <i class='bx bx-user'></i>
+        </div>
+        <div class="inputbox">
+            <input type="password" name="password" placeholder="Password" required>
+            <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="Remember">
+            <label><input type="checkbox"> Remember Me</label>
+            <a href="#">Forget Password?</a>
+        </div>
+        <div>
+            <button type="submit" class="btn">Login</button>
+        </div>
+        <div class="register">
+            <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+    </form>    
+</div>
+
+<!-- Cluster Login Form -->
+<div class="wrapper" id="clusterLoginForm">
+    <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+    <form action="/cluster" method="POST">
+        <h1>Cluster Login</h1>
+        <div class="inputbox">
+            <input type="text" name="username" placeholder="Username" required>
+            <i class='bx bx-user'></i>
+        </div>
+        <div class="inputbox">
+            <input type="password" name="password" placeholder="Password" required>
+            <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="Remember">
+            <label><input type="checkbox"> Remember Me</label>
+            <a href="#">Forget Password?</a>
+        </div>
+        <div>
+            <button type="submit" class="btn">Login</button>
+        </div>
+        <div class="register">
+            <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+    </form>    
+</div>
+
+<!-- Teacher Login Form -->
+<div class="wrapper" id="beoLoginForm">
+    <button class="back-btn" onclick="goBack()"><i class='bx bx-arrow-back'></i></button>
+    <form action="/beo" method="POST">
+        <h1>BEO Login</h1>
+        <div class="inputbox">
+            <input type="text" name="username" placeholder="Username" required>
+            <i class='bx bx-user'></i>
+        </div>
+        <div class="inputbox">
+            <input type="password" name="password" placeholder="Password" required>
+            <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="Remember">
+            <label><input type="checkbox"> Remember Me</label>
+            <a href="#">Forget Password?</a>
+        </div>
+        <div>
+            <button type="submit" class="btn">Login</button>
+        </div>
+        <div class="register">
+            <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+    </form>    
+</div>
+
+    <script>
+
+        function submitStudent() {
+            const username = document.getElementById('login-usr').value;
+            const password = document.getElementById('login-pswd').value;
+
+            if (username && password) {
+                document.getElementById('studentLogin').submit();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.wrapper').forEach(el => el.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function openPage(role) {
+            if (role === 'admin') {
+                showSection('adminOptions');
+            } else {
+                showSection('loginForm');
+            }
+        }
+
+        function goBack() {
+            if (document.getElementById('adminOptions').classList.contains('active')) {
+                showSection('roleSelection');
+            } else {
+                showSection('adminOptions');
+            }
+        }
+
+        function redirectTo(role) {
+    if (role === '/student') {
+        showSection('studentLoginForm');
+    } else if (role === '/teacher') {
+        showSection('teacherLoginForm');
+    } else if (role === '/head') {
+        showSection('headLoginForm');
+    } else if (role === '/cluster') {
+        showSection('clusterLoginForm');
+    } else if (role === '/beo') {
+        showSection('beoLoginForm');
+    } else {
+        window.location.href = role;
+    }
+}
+
+    </script>
+</body>
+</html>
