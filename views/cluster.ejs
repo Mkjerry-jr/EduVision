@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Cluster Head</title>
   <link rel="stylesheet" href="/cluster-style.css">
+  <link rel="icon" type="image/png" href="/images/EduVision.png" sizes="32x32">
 </head>
 <body>
   <!-- Sidebar -->
@@ -26,8 +27,8 @@
         <div class="profile-row">
           <div class="profile-photo">H</div>
           <div class="profile-info">
-              <p><strong>Cluster  Name:</strong> John Doe</p>
-              <p><strong>Cluster ID:</strong> <%= head.sid %></p>
+              <p><strong>Cluster Head  Name:</strong> <%= head.hname %></p>
+              <p><strong>Cluster ID:</strong> <%= head.cid %></p>
           </div>
         </div>
       
@@ -76,6 +77,7 @@
               <div id="school-detail-<%= i %>" class="school-detail" style="display: none;">
                 <h1><%= school.sname %></h1>
                 <p><strong>Head:</strong> <%= school.hname %></p>
+                <p><strong>School ID:</strong> <%= school.sid %></p>
                 <p><strong>Location:</strong> <%= school.Address %></p>
                 <p><strong>Number of Students:</strong> <%= school.Nostud %></p>
                 <p><strong>Number of Teachers:</strong> <%= school.Noteach %></p>

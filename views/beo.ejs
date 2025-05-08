@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>BEO</title>
-  <link rel="stylesheet" href="/beo-style.css">
+  <link rel="stylesheet" href="/beo-style.css"><link rel="icon" type="image/png" href="/images/EduVision.png" sizes="32x32">
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <div class="back-button1" onclick="goBack()">
+      <div class="back-button1" onclick="goBack1()">
         <img src="https://cdn-icons-png.flaticon.com/512/545/545680.png" alt="Back" style="width:20px;height:20px;">
       </div>
       BEO
@@ -27,8 +27,8 @@
         <div class="profile-row">
           <div class="profile-photo">H</div>
           <div class="profile-info">
-              <p><strong>BEO Name:</strong> John Doe</p>
-              <p><strong>BEO ID:</strong> SCH12345</p>
+              <p><strong>BEO Name:</strong> Mr. Pratap Singh</p>
+              <p><strong>BEO ID:</strong> 1</p>
           </div>
         </div>
       
@@ -57,25 +57,26 @@
     <!--------------------------------------------school------------------------------------------------------------------>
     <div id="School" class="page">
       <div class="container2">
-        <div class="container">
-          <div class="cluster" onclick="showSchools('north')">North Bengaluru</div>
-          <div class="cluster" onclick="showSchools('west')">West Bengaluru</div>
-          <div class="cluster" onclick="showSchools('east')">East Bengaluru</div>
-          <div class="cluster" onclick="showSchools('south')">South Bengaluru</div>
+        <h1>Explore Schools by Clusters</h1>
+
+        <div class="btn-group">
+          <button class="btn" onclick="showSchools('North')">North</button>
+          <button class="btn" onclick="showSchools('South')">South</button>
+          <button class="btn" onclick="showSchools('East')">East</button>
+          <button class="btn" onclick="showSchools('West')">West</button>
         </div>
       
-        <div id="school-list" class="school-list" style="display: none;">
-          <h3>Schools in the selected cluster:</h3>
-          <div id="schools"></div>
+        <div id="container1" class="container">
+          <h2 id="region-title"></h2>
+          <div class="school-list" id="school-list"></div>
         </div>
       
-        <div id="school-details" class="school-details">
-          <h3>School Details</h3>
-          <div id="details"></div>
-          <button class="back-button" onclick="backToSchools()">Back to Schools</button>
+        <div id="container2" class="container">
+          <h2 id="school-name"></h2>
+          <div class="school-details" id="school-details"></div>
+          <button class="btn back-btn" onclick="goBack()">← Back</button>
         </div>
-      
-      </div>
+      </div>  
     </div>
     <div id="Food" class="page">
       <div class="container3">
@@ -136,84 +137,187 @@
       // Implement custom back navigation if needed
     }
 
-
     // Example: dynamically populate counters
-    document.getElementById('schoolsCount').innerText = 42;
-    document.getElementById('studentsCount').innerText = 1500;
-    document.getElementById('teachersCount').innerText = 80;
+    document.getElementById('schoolsCount').innerText = 12;
+    document.getElementById('studentsCount').innerText = 1041;
+    document.getElementById('teachersCount').innerText = 192;
     document.getElementById('clusterCount').innerText = 4;
     
-    
 
+    function goBack1() {
+      window.location.replace("http://localhost:3000");
+    }
 
-    const schoolData = {
-      north: [
-        <% BEO.forEach(beo => { %>
-        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
-      <% }) %>
+    const schools = {
+      North: [
+        {
+          name: "Govt Primary School, Yelahanka",
+          sid: "101",
+          cid: "North",
+          head: "Mr. Khan",
+          students: 78,
+          teachers: 15,
+          tribal: 6,
+          address: "No 2/3, Jalahalli, Yelahanka, Bengaluru"
+        },
+        {
+          name: "Govt Higher Primary School, Hebbal",
+          sid: "102",
+          cid: "North",
+          head: "Mrs. Latha",
+          students: 75,
+          teachers: 16,
+          tribal: 12,
+          address:"Hebbal Main Road, Bengaluru"
+        },
+        {
+          name: "Govt High School, RT Nagar",
+          sid: "103",
+          cid: "North",
+          head: "Mr. Ramesh",
+          students: 81,
+          teachers: 16,
+          tribal: 2,
+          address:"RT Nagar 2nd Block, Bengaluru"
+        }
       ],
-      west: [
-      <% BEO.forEach(beo => { %>
-        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
-      <% }) %>
+      South: [
+        {
+          name: "Govt Model School, JP Nagar",
+          sid: "110",
+          cid: "South",
+          head: "Mrs. Nandini",
+          students: 79,
+          teachers: 13,
+          tribal: 8,
+          address:"6th Phase, JP Nagar, Bengaluru"
+        },
+        {
+          name: "Govt High School, BTM Layout",
+          sid: "111",
+          cid: "South",
+          head: "Mr. Deepak",
+          students: 75,
+          teachers: 15,
+          tribal: 13,
+          address:"BTM 2nd Stage, Bengaluru"
+        },
+        {
+          name: "Govt Urdu School, Jayanagar",
+          sid: "112",
+          cid: "South",
+          head: "Mrs. Salma",
+          students: 78,
+          teachers: 16,
+          tribal: 4,
+          address:"4th Block, Jayanagar, Bengaluru"
+        }
       ],
-      east: [
-      <% BEO.forEach(beo => { %>
-        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
-      <% }) %>
+      East: [
+        {
+          name: "Govt Primary School, KR Puram",
+          sid: "104",
+          cid: "East",
+          head: "Mrs. Jyoti",
+          students: 86,
+          teachers: 14,
+          tribal: 0,
+          address:"2nd Cross, KR Puram, Bengaluru"
+        },
+        {
+          name: "Govt High School, Marathahalli",
+          sid: "105",
+          cid: "East",
+          head: "Mr. Rajeev",
+          students: 78,
+          teachers: 15,
+          tribal: 4,
+          address:"Near Bridge, Marathahalli, Bengaluru"
+        },
+        {
+          name: "Govt Urdu School, Whitefield",
+          sid: "106",
+          cid: "East",
+          head: "Mr. Faiz",
+          students: 76,
+          teachers: 17,
+          tribal: 9,
+          address:"Main Road, Whitefield, Bengaluru"
+        }
       ],
-      south: [
-      <% BEO.forEach(beo => { %>
-        { name: '<%= beo.sname %>', details: '<%= beo.sid %>' },
-      <% }) %>
-      ],
+      West: [
+        {
+          name: "Govt Kannada School, Rajajinagar",
+          sid: "107",
+          cid: "West",
+          head: "Mrs. Rekha",
+          students: 75,
+          teachers: 15,
+          tribal: 5,
+          address:"5th Block, Rajajinagar, Bengaluru"
+        },
+        {
+          name: "Govt Primary School, Vijayanagar",
+          sid: "108",
+          cid: "West",
+          head: "Mr. Suresh",
+          students: 78,
+          teachers: 15,
+          tribal: 8,
+          address:"2nd Stage, Vijayanagar, Bengaluru"
+        },
+        {
+          name: "Govt School, Basaveshwaranagar",
+          sid: "109",
+          cid: "West",
+          head: "Mr. Ravi",
+          students: 81,
+          teachers: 16,
+          tribal: 3,
+          address:"3rd Block, Basaveshwaranagar, Bengaluru"
+        }
+      ]
     };
 
-    function showSchools(cluster) {
-      const schoolListContainer = document.getElementById('school-list');
-      const schoolsDiv = document.getElementById('schools');
-      const schoolDetailsContainer = document.getElementById('school-details');
-      const detailsDiv = document.getElementById('details');
-      
-      // Clear the previous school list and details
-      schoolsDiv.innerHTML = '';
-      detailsDiv.innerHTML = '';
-      schoolDetailsContainer.style.display = 'none';
+    function showSchools(region) {
+      const regionTitle = document.getElementById('region-title');
+      const schoolList = document.getElementById('school-list');
+      regionTitle.textContent = region + " Region Schools:";
+      schoolList.innerHTML = "";
 
-      // Populate the school list based on the selected cluster
-      const schools = schoolData[cluster];
-      schools.forEach(school => {
-        const schoolItem = document.createElement('div');
-        schoolItem.classList.add('school-item');
-        schoolItem.textContent = school.name;
-        schoolItem.onclick = () => showSchoolDetails(school); // Add click listener to show school details
-        schoolsDiv.appendChild(schoolItem);
+      schools[region].forEach((school, index) => {
+        const div = document.createElement("div");
+        div.className = "school";
+        div.textContent = school.name;
+        div.onclick = () => showDetails(school);
+        schoolList.appendChild(div);
       });
 
-      // Show the school list section
-      schoolListContainer.style.display = 'block';
+      document.getElementById('container2').style.display = "none";
+      document.getElementById('container1').style.display = "block";
     }
 
-    function showSchoolDetails(school) {
-      const schoolDetailsContainer = document.getElementById('school-details');
-      const detailsDiv = document.getElementById('details');
-      
-      // Display the school details
-      detailsDiv.innerHTML = `<strong>Name:</strong> ${school.name}<br><strong>Details:</strong> ${school.details}`;
-      
-      // Hide the school list and show the details section
-      document.getElementById('school-list').style.display = 'none';
-      schoolDetailsContainer.style.display = 'block';
-    }
+    function showDetails(school) {
+      document.getElementById('school-name').textContent = school.name;
 
-    function backToSchools() {
-      // Hide the school details and show the school list again
-      document.getElementById('school-details').style.display = 'none';
-      document.getElementById('school-list').style.display = 'block';
+      const detailContainer = document.getElementById('school-details');
+      detailContainer.innerHTML = `
+        <div class="detail-row"><span class="label">School ID:</span><span>${school.sid}</span></div>
+        <div class="detail-row"><span class="label">Cluster ID:</span><span>${school.cid}</span></div>
+        <div class="detail-row"><span class="label">Head Name:</span><span>${school.head}</span></div>
+        <div class="detail-row"><span class="label">No. of Students:</span><span>${school.students}</span></div>
+        <div class="detail-row"><span class="label">No. of Teachers:</span><span>${school.teachers}</span></div>
+        <div class="detail-row"><span class="label">No. of Tribal student:</span><span>${school.tribal}</span></div>
+        <div class="detail-row"><span class="label">Address: </span><span>${school.address}</span></div>
+      `;
+
+      document.getElementById('container1').style.display = "none";
+      document.getElementById('container2').style.display = "block";
     }
 
     function goBack() {
-      window.location.replace("http://localhost:3000");
+      document.getElementById('container2').style.display = "none";
+      document.getElementById('container1').style.display = "block";
     }
 
 

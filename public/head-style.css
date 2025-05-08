@@ -80,7 +80,7 @@
     color: black;
     font-size: 1.1em;
     margin-bottom: 30px;
-    background-color: #e2eafc;
+    background: linear-gradient(330deg, #74b9ff, #dfe6e9);
   }
 
   .profile-photo {
@@ -102,6 +102,7 @@
   }
 
   .container {
+    background: white;
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
@@ -156,7 +157,7 @@
     font-weight: 300;
   }.timetable-upload-section {
   padding: 20px;
-  background-color: #f9f9f9;
+  background: linear-gradient(330deg, #74b9ff, #dfe6e9);
   border-radius: 12px;
   margin-top: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -207,6 +208,123 @@
 
 
 /*--------------------------------------Student & Teacher-----------------------------------------------------------*/
+
+.toast-container {
+  position: fixed;
+  top: 25px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.toast {
+  position: relative;
+  width: 320px;
+  border-radius: 12px;
+  background: #fff;
+  padding: 20px 35px 20px 25px;
+  box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  overflow-x: hidden;
+  align-items: center;
+  transform: translateX(calc(100% + 30px));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+}
+
+.toast.active {
+  transform: translateX(0%);
+}
+
+.toast .toast-content {
+  display: flex;
+  align-items: center;
+}
+
+.toast-content .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  min-width: 35px;
+  font-size: 35px;
+  color: #fff;
+}
+
+.toast-content .message {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+
+.message .text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666666;
+  font-family: "Outfit", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.message .text.text-1 {
+  font-weight: 600;
+  color: #333;
+}
+
+.toast .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toast .close:hover {
+  opacity: 1;
+}
+
+.toast .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+}
+
+.toast .progress:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #4070f4;
+}
+ /* If you edit the timeout variable in the JS, be sure to edit this too */
+.progress.active:before {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  100% {
+    right: 100%;
+  }
+}
+
+/* Toast Type Colors */
+.toast.success .icon { color: rgb(25 135 84); }
+.toast.error .icon { color: rgb(220 53 69); }
+.toast.warning .icon { color: rgb(255 193 7); }
+.toast.info .icon { color: rgb(13 202 240); }
+
+.toast.success .progress:before { background: rgb(25 135 84); }
+.toast.error .progress:before { background: rgb(220 53 69); }
+.toast.warning .progress:before { background: rgb(255 193 7); }
+.toast.info .progress:before { background: rgb(13 202 240); }
+
+
 .student-container, .teacher-container {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -323,30 +441,35 @@
 /*--------------------------------------Tribal-----------------------------------------------------------*/
 
 
-.tribal-container {
-  height: 650px;
+#assignment-app * {
+  box-sizing: border-box;
+  margin-top: 0;
+  padding: 0;
+}
+
+#assignment-app {
+  height: 680px;
   font-family: 'Arial', sans-serif;
-  background-color: #f3f4f6;
+  background-color: #f0f4f8;
   color: #333;
   overflow: hidden;
   font-size: 16px;
-  border-radius: 10px;
 }
 
-h1 {
+#assignment-app h1 {
   text-align: center;
   font-size: 2.5rem;
   margin: 30px 0;
   color: #2980b9;
 }
 
-.actions {
+#assignment-app .actions {
   text-align: center;
   margin-bottom: 10px;
-  margin-top: 35px;
+  margin-top: -15px;
 }
 
-button{
+#assignment-app button {
   padding: 12px 30px;
   margin: 0 15px;
   font-weight: 600;
@@ -359,78 +482,77 @@ button{
   transition: all 0.3s ease;
 }
 
-button {
+#assignment-app button:hover {
   background-color: #1c5a80;
   transform: scale(1.05);
 }
 
-.container8 {
+#assignment-app .container {
   display: flex;
   justify-content: space-between;
-  height: calc(100vh - 15px);
+  height: calc(100vh - 175px);
   padding: 20px;
   gap: 20px;
   overflow: hidden;
 }
 
-.column {
+#assignment-app .column {
   flex: 1;
   background: white;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   padding: 20px;
+  max-height: calc(100vh - 200px);
 }
 
-.column h2 {
+#assignment-app .column h2 {
   font-size: 1.5rem;
   text-align: center;
   margin-bottom: 20px;
   color: #34495e;
 }
 
-ul {
+#assignment-app ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.user {
+#assignment-app .user {
   background-color: #f0f4f8;
   padding: 15px;
   border-radius: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 5px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   position: relative;
 }
 
-.user strong {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-.user small {
+
+#assignment-app .user small {
   font-size: 0.9rem;
   color: #7f8c8d;
 }
 
-.user:hover {
+#assignment-app .user:hover {
   background-color: #e1e8ed;
   transform: scale(1.02);
 }
 
-.assigned {
+#assignment-app .assigned {
   background-color: #d4f7d4;
   border-left: 6px solid #2ecc71;
 }
 
-.unassigned {
+#assignment-app .unassigned {
   background-color: #f9d2d2;
   border-left: 6px solid #e74c3c;
 }
 
-.unassigned::after {
+#assignment-app .unassigned::after {
   content: "Not Assigned";
   position: absolute;
   top: 10px;
@@ -442,7 +564,7 @@ ul {
   border-radius: 15px;
 }
 
-.assigned::after {
+#assignment-app .assigned::after {
   content: "Assigned";
   position: absolute;
   top: 10px;
@@ -454,30 +576,26 @@ ul {
   border-radius: 15px;
 }
 
-/* Members layout: 4 in a row */
-.column#membersColumn ul {
+/* Members: 4 in a row */
+#assignment-app .column#membersColumn ul {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 0;
 }
 
-.column#membersColumn .user {
-  flex: 1 1 calc(25% - 20px); /* 4 per row, accounting for gap */
+#assignment-app .column#membersColumn .user {
+  flex: 1 1 calc(25% - 20px);
   min-width: 230px;
 }
 
-/* Scrollable container */
-.column {
-  overflow-y: auto;
-  max-height: calc(100vh - 140px);
-}
 /*--------------------------------------Doctor-----------------------------------------------------------*/
 .Doctor-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f7fa;
+    background: linear-gradient(330deg, #74b9ff, #dfe6e9);
     margin: 0;
+    height: 680px;
     padding: 20px;
+    border-radius: 20px;
     box-sizing: border-box;
     overflow: hidden; /* Prevent both horizontal and vertical scrolling */
   }

@@ -1,36 +1,28 @@
 const express = require('express');
-const multer = require('multer');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const { Storage } = require('@google-cloud/storage');
+const upload = require('../controllers/uploader')
 const authController = require('../controllers/authController');
 const Student = require('../models/newstudentModel');
 const Teacher = require('../models/newteacherModel');
 const Head = require('../models/newheadModel');
 const session = require('express-session');
-
-const multerFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Not an image! Please upload only images.'), false);
-    }
-  };
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads'),
-    filename: (req, file, cb) => {
-        const ext = file.mimetype.split('/')[1];
-        const date = Date.now();
-        cb(null, `Time-Table_${Date}.${ext}`);
-      }
-});
-
-const upload = multer({ storage: storage, fileFilter: multerFilter, limits: { fileSize: 20000000 } });
+const multer = require('multer')
+const path = require('path');
+const fs = require('fs')
 
 let teacher;
+let student;
+let head;
 let globalTeacher = null;
+
+const uploadTimetables = upload.fields([
+    { name: 'class1_timetable', maxCount: 1 },
+    { name: 'class2_timetable', maxCount: 1 },
+    { name: 'class3_timetable', maxCount: 1 },
+    { name: 'class4_timetable', maxCount: 1 },
+    { name: 'class5_timetable', maxCount: 1 },
+    { name: 'teacher_timetable', maxCount: 1 }
+]);
 
 // BEO
 router.post('/BEO', async (req, res) => {
@@ -317,6 +309,46 @@ router.post('/student', async (req, res) => {
             percentage = student.attendanceSummary.percentage;
         }
 
+        async function getTiTi() {
+            try {
+                const student = await Student.findOne({ rollNo: req.body.username.trim() });
+                if (!student) {
+                    console.log("Student not found");
+                    return null;
+                }
+                
+                let timetableFilename = '';
+                
+                if(student.classy === "1st") {
+                    timetableFilename = 'class1_timetable.png';
+                    console.log("fetched class 1");
+                } else if(student.classy === "2nd") {
+                    timetableFilename = 'class2_timetable.png';
+                    console.log("fetched class 2");
+                } else if(student.classy === "3rd") {
+                    timetableFilename = 'class3_timetable.png';
+                    console.log("fetched class 3");
+                } else if(student.classy === "4th") {
+                    timetableFilename = 'class4_timetable.png';
+                    console.log("fetched class 4");
+                } else if(student.classy === "5th") {
+                    timetableFilename = 'class5_timetable.png';
+                    console.log("fetched class 5");
+                } else {
+                    console.log("Error fetching student timetable: Invalid class");
+                    return null;
+                }
+                
+                // Return just the URL path that will be accessible from the browser
+                return `/uploads/${timetableFilename}`;
+            } catch (error) {
+                console.error("Error in getTiTi function:", error);
+                return null;
+            }
+        }
+        
+        const timetableData = await getTiTi();
+
         await getAttendanceSummary();
 
         const absentDays = totalDays - presentDays;
@@ -345,8 +377,10 @@ router.post('/student', async (req, res) => {
             ms,
             es,
             em,
-            ee
+            ee,
+            timetableData
         });
+
     
     } catch (error) {
         console.error("Error in s_login:", error);
@@ -356,9 +390,8 @@ router.post('/student', async (req, res) => {
 
 //HEAD
 router.post('/head', async (req, res) => {
-    let student;
-    let teacher;
     try {
+        let message, success, failed;
         // console.log(req.body);
         console.log("Received username:", req.body.username);
         console.log("Received password:", req.body.password);
@@ -366,13 +399,14 @@ router.post('/head', async (req, res) => {
         if (!req.body.username || !req.body.password) {
             return res.status(400).send('Username and password are required');
         }
-        // Try to find teacher with either tid OR username field
-        const head = await Head.findOne({ sid: req.body.username });
+        // Try to find teacher with either sid OR username field
+        head = await Head.findOne({ sid: req.body.username });
+        req.session.head = head;
         
-        console.log(head);
+        console.log("Head: ",req.session.head);
 
         if (!head) {
-            console.log("No head found with username/tid:", req.body.username);
+            console.log("No head found with username/sid:", req.body.username);
             return res.status(400).send('Head not found');
         }
 
@@ -404,17 +438,28 @@ router.post('/head', async (req, res) => {
         } catch (error) {
             res.send(error);
         }
-        
+    
+        const countTribals = await Student.countDocuments({ tribal: 'Yes' });
+        const headdb = await Head.findOneAndUpdate(
+            { sid: String(req.session.head.sid) },
+            { $set: { NoTribal: countTribals } }
+        );
+        if (!headdb) {
+            message = 'Error occurred during updating Head';
+            console.log(message);
+        } else {
+            console.log('Successfully updated Head');
+        }   
+
         console.log("User logged in as head successfully:", head.sid);
 
-        res.render("head", { head, student, teacher });
+        res.render("head", { head, student, teacher, success, failed, message });
 
     } catch (error) {
         console.error("Error in head login:", error);
         res.status(500).send('Server error');
     }
 });
-
 
 //TEACHER
 router.post('/teacher', async (req, res) => {
@@ -424,7 +469,7 @@ router.post('/teacher', async (req, res) => {
         }
 
         const t_user = req.body.username;
-        const t_pass = req.body.password;
+        const t_pass = Number(req.body.password);
 
         console.log(`entered: ${typeof t_user} and ${typeof t_pass}`);
         
@@ -475,14 +520,24 @@ router.post('/teacher', async (req, res) => {
             }
         }
 
-        res.render("teach", { teacher, students: studentNames, classSelected, date, message });
+        async function getTiTi() {
+        try {
+        let timetableFilename = 'teacher_timetable.png';
+                return `/uploads/${timetableFilename}`;
+            } catch (error) {
+                console.error("Error in getTiTi function:", error);
+                return null;
+            }
+        }        
+        const timetableData = await getTiTi();
+
+        res.render("teach", { teacher, students: studentNames, classSelected, date, message, timetableData });
 
     } catch (error) {
         console.error("Error in teacher login route:", error);
         res.status(500).send('Server error');
     }
 });
-
 //STUDENT
 router.get('/attendance', async (req, res) => {
     try {
@@ -626,6 +681,8 @@ router.post('/attendance', async (req, res) => {
                     new Date(att.date).toDateString() === attendanceDate.toDateString()
                 );
 
+                console.log(alreadyMarked);
+
                 if (!alreadyMarked) {
                     student.attendance.push(attendanceEntry);
                     await student.save();
@@ -641,11 +698,156 @@ router.post('/attendance', async (req, res) => {
     }
 });
 
-router.post('/upload-timetables', upload.single('timetable'), async(req, res) => {
-    const { timetable } = req.file;
-    const gDriveLink = "https://drive.google.com/drive/folders/1b-FHnIAeFOo5Gr6E7IxBynHkl8Uw_Fbk?usp=drive_link";
+router.post('/up-timetable', uploadTimetables, async (req, res) => {
+    const head = req.session.head;
+    console.log(head);
+    try {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).json({ message: "Please upload at least one timetable!" })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred during file upload." });
+    }
+     res.status(200).json({ message: "Uploaded Successfully!"});
+});
 
+router.get('/time-table', async (req, res) => {
 
+});
+
+router.post('/submit', async (req, res) => {
+    try {
+        let message = '', success = '', failed = '';
+        const head = req.session.head;
+        
+        const student = await Student.find({ rollNo: String(req.body.rollNo) });
+        console.log("Student :",student);
+        
+        if (student.length > 0) {
+            failed = "Student already registered"
+            res.render("head", { head, success, message, failed, student, teacher })
+        } else {
+            await registerStud();
+        }
+        
+        async function registerStud() {
+            try {
+                const studentReg = new Student({ 
+                    fullName: req.body.fullName, 
+                    rollNo: req.body.rollNo, 
+                    classy: String(req.body.classy), 
+                    dob: req.body.dob, 
+                    caste: req.body.caste, 
+                    height: Number(req.body.height), 
+                    weight: Number(req.body.weight), 
+                    bloodGroup: req.body.bloodGroup, 
+                    fatherName: req.body.fatherName, 
+                    fatherOccupation: req.body.fatherOccupation, 
+                    fatherEmail: req.body.fatherEmail, 
+                    fatherPhone: Number(req.body.fatherPhone), 
+                    motherName: req.body.motherName, 
+                    motherOccupation: req.body.motherOccupation, 
+                    motherEmail: req.body.motherEmail, 
+                    motherPhone: Number(req.body.motherPhone), 
+                    tribal: req.body.tribal, 
+                    address: req.body.address, 
+                    cid: head?.cid || null, 
+                    sid: head?.sid ? Number(head.sid) : null, 
+                    bid: head?.bid ? Number(head.bid) : null, 
+                    bname: req.session.head.bname || null 
+                });
+
+                const countStuds = await Student.countDocuments({ sid: Number(req.session.head.sid) });
+
+const headdb = await Head.findOneAndUpdate(
+    { sid: String(req.session.head.sid) },
+    { $set: { Nostud: countStuds } }
+);
+
+if (!headdb) {
+    message = 'Error occurred during updating Head';
+    console.log(message);
+} else {
+    console.log(success);
+}   
+                
+                const result = await studentReg.save();
+                
+                if (!result) {
+                    message = 'Error occurred during registration';
+                    console.log('Error occurred during registration');
+                    res.render("head", { head, message, student, teacher, failed, success });
+                } else {
+                    success = 'Successfully registered';
+                    console.log('Pushed data successfully to MongoDB');
+                    res.render("head", { head, success, student, teacher, message, failed });
+                }
+            } catch (error) {
+                message = error;
+                console.error("Error in register function:", error);
+                res.render("head", { head, message, student, teacher, failed, success })
+            }
+        }
+    } catch (error) {
+        console.error("Error in main route handler:", error);
+        res.status(500).send("Server error occurred");
+    }
+});
+
+router.post('/Tsubmit', async (req, res) => {
+        try {
+            let message, success, failed;
+            const head = req.session.head;
+            
+            const teacher = await Teacher.find({ tid: String(req.body.tid) });
+            
+            if (teacher.length > 0) {
+                failed = "Teacher already registered"
+                res.render("head", { head, success, message, failed, student, teacher })
+            } else {
+                await registerTeach();
+            }
+            
+            async function registerTeach() {
+                try {
+                    const teacherReg = new Teacher({ tid: String(req.body.tid), sex: req.body.sex, name: req.body.name, dob: req.body.dob, education: req.body.education, bloodgroup: req.body.bloodgroup, experience: req.body.experience, domain: req.body.domain, mobile: req.body.mobile, email: req.body.email, address: req.body.address, bid: req.session.head.bid, cid: req.session.head.cid, bname: req.session.head.bname, sid: req.session.head.sid });
+                    const result = await teacherReg.save();
+
+                    const countTeachs = await Teacher.countDocuments({ sid: String(req.session.head.sid) });
+                    const headdb = await Head.findOneAndUpdate(
+                        { sid: Number(req.session.head.sid) },
+                        { $set: { Noteach: Number(countTeachs) }
+                    });
+                    console.log(headdb)
+                    
+                    if (!headdb) {
+                        message = 'Error occurred during updating Head';
+                        console.log(message);
+                    } else {
+                        success = 'Successfully updated Head';
+                        console.log(success);
+                    }
+
+                    if (!result) {
+                        message = 'Error occurred during registration';
+                        console.log('Error occurred during registration');
+                        res.render("head", { head, message, student, teacher, failed, success });
+                    } else {
+                        success = 'Successfully registered';
+                        console.log('Pushed data successfully to MongoDB');
+                        res.render("head", { head, success, student, teacher, message, failed });
+                    }
+                } catch (error) {
+                    message = error;
+                    console.error("Error in register function:", error);
+                    res.render("head", { head, message, student, teacher, failed, success })
+                }
+            }
+        } catch (error) {
+            console.error("Error in main route handler:", error);
+            res.status(500).send("Server error occurred");
+        }
 });
 
 router.post('/register', authController.register);

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Teacher Login</title>
   <link rel="stylesheet" href="../teach-style.css">
+  <link rel="icon" type="image/png" href="/images/EduVision.png" sizes="32x32">
 </head>
 <body>
   <!-- Sidebar -->
@@ -44,13 +45,16 @@
           <!-- 
           <div class="info-item">Class: <span id="class-name" style="margin-left:10px;"><%= teacher.grade %></span></div>
           -->
-          <div class="info-item">Subjects: [ English, Maths, Science ]</div>
+          <div class="info-item">Subject Handled: <%= teacher.domain %></div>
         </div>
       
         <div class="image-container" id="timetableImageContainer">
           <!-- Timetable Image will be shown here -->
-          <img id="timetableImage" src="" alt="No timetable uploaded yet" style="display: none;">
-          <span id="placeholderText" style="color: #aaa; font-size: 1.2rem;">No Timetable Available</span>
+          <% if (timetableData) { %>
+            <img src="<%= timetableData %>" alt="Class Timetable" class="timetable-image">
+          <% } else { %>
+            <span id="placeholderText" style="color: #aaa; font-size: 1.2rem;">No Timetable Available</span>
+          <% } %>
         </div>
       
       </div>

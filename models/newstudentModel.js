@@ -17,7 +17,6 @@ const studentSchema = new mongoose.Schema({
     },
     dob: {
         type: Date,
-        required: true
     },
     sex: {
         type: String,
@@ -106,10 +105,5 @@ studentSchema.pre('save', function(next) {
     }
     next();
 });
-
-// Indexes for faster queries
-studentSchema.index({ rollNo: 1 });
-studentSchema.index({ classy: 1 });
-studentSchema.index({ "attendance.date": 1 });
 
 module.exports = mongoose.model('Student', studentSchema);

@@ -1,8 +1,8 @@
     const mongoose = require('mongoose');
 
     const teacherSchema = new mongoose.Schema({
-        sid: String,
-        tid: String,
+        sid: Number,
+        tid: Number,
         name: String,
         dob: Date,
         sex: String,
@@ -14,8 +14,10 @@
         email: String,
         address: String,
         cid: String,
-        bid: String,
+        bid: Number,
         bname: String
     });
 
-    module.exports = mongoose.model('teachers', teacherSchema);
+    const Teacher = mongoose.model('teachers', teacherSchema);
+
+    module.exports = Teacher;

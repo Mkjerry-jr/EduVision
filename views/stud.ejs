@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Student Login</title>
   <link rel="stylesheet" href="/stud-style.css">
+  <link rel="icon" type="image/png" href="/images/EduVision.png" sizes="32x32">
 </head>
 <body>
   <!-- Sidebar -->
@@ -107,14 +108,14 @@
         <h1 class="tt">Timetable</h1>
         <div class="info-grid1">
           <div class="info-item">Class: <span id="class-name" style="margin-left:10px;"><%= student.classy %></span></div>
-          <div class="info-item">Class Teacher: <span id="class-teacher" style="margin-left:10px;">Mr. Sharma</span></div>
+          <div class="info-item">Subjects: <span id="class-teacher" style="margin-left:10px;">[English, Maths, Science]</span></div>
         </div>
       
-        <div class="image-container" id="timetableImageContainer">
-          <!-- Timetable Image will be shown here -->
-          <img id="timetableImage" src="" alt="No timetable uploaded yet" style="display: none;">
-          <span id="placeholderText" style="color: #aaa; font-size: 1.2rem;">No Timetable Available</span>
-        </div>
+        <% if (timetableData) { %>
+          <img src="<%= timetableData %>" alt="Class Timetable" class="timetable-image">
+        <% } else { %>
+          <p>Timetable not available for this class.</p>
+        <% } %>
       
       </div>
     </div>

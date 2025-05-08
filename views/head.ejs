@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>Head Login</title>
   <link rel="stylesheet" href="./head-style.css">
+  <link rel="icon" type="image/png" href="/images/EduVision.png" sizes="32x32">
 </head>
 <body>
+  
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
@@ -26,6 +28,29 @@
   <div class="content-area">
     <!-----------------------------------------Home------------------------------------------------------------->
     <div id="home" class="page active">
+      <div class="toast-container"></div>
+
+<% if(message != null) { %>
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            showToast("<%= message %>", "info");
+          });
+        </script>
+      <% } else if(success != null) { %>
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            showToast("<%= success %>", "success");
+          });
+        </script>
+      <% } else if (failed != null) { %>
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            showToast("<%= failed %>", "error");
+          });
+        </script>
+      <% } else { %>
+        <!-- No notification to show -->
+      <% }%>
       <div class="profile-row">
         <div class="profile-photo">H</div>
         <div class="profile-info">
@@ -55,7 +80,7 @@
         </div>
       </div>
     
-      <form action="/upload-timetables" method="post" enctype="multipart/form-data">
+      <form action="/up-timetable" method="post" enctype="multipart/form-data">
         <div class="timetable-upload-section">
           <h2>Add Timetable to Classes</h2>
         <div class="upload-row">
@@ -96,27 +121,33 @@
             </label>
           </div>
         </div>
+        <button type="submit" class="submit-btn">Upload Timetables</button>
+
         </div>
         
       </form>
       </div>    
 
     <!-----------------------------------------Student List------------------------------------------------------------->
+    
     <div id="sl" class="page">
       <div class="student-container">
         <div class="container1">
           <h3>New Student Registration</h3>
-          <form id="studentForm" action="/submit" method="POST" enctype="multipart/form-data">
+          
+            
+          
+          <form id="studentForm" action="/submit" method="POST">
             <div class="form-grid">
       
               <!-- Row 1 -->
               <div class="span-2">
                 <label for="fullName">Full Name:</label>
-                <input type="text" name="fullName" required>
+                <input type="text" name="fullName" >
               </div>
               <div>
                 <label for="rollNo">Roll No:</label>
-                <input type="text" name="rollNo" required>
+                <input type="text" name="rollNo" >
               </div>
               <div>
                 <label for="profilePic">Profile Picture:</label>
@@ -126,16 +157,16 @@
       
               <!-- Row 2 -->
               <div>
-                <label for="height">Height (ft):</label>
-                <input type="number" name="height" step="0.1" required>
+                <label for="height">Height (Cms):</label>
+                <input type="number" name="height" step="0.1" >
               </div>
               <div>
-                <label for="weight">Weight (kg):</label>
-                <input type="number" name="weight" required>
+                <label for="weight">Weight (Kg):</label>
+                <input type="number" name="weight" >
               </div>
               <div>
                 <label for="bloodGroup">Blood Group:</label>
-                <select name="bloodGroup" required>
+                <select name="bloodGroup" >
                   <option value="">Select</option>
                   <option value="A+">A+</option>
                   <option value="A-">A-</option>
@@ -150,7 +181,7 @@
               <div>
                 <label>Sex:</label>
                 <div class="radio-group">
-                  <input type="radio" name="sex" value="Male" id="male" required hidden>
+                  <input type="radio" name="sex" value="Male" id="male"  hidden>
                   <label class="radio-btn" for="male">Male</label>
               
                   <input type="radio" name="sex" value="Female" id="female" hidden>
@@ -161,23 +192,23 @@
               <!-- Row 3 -->
               <div>
                 <label for="dob">Date of Birth:</label>
-                <input type="date" name="dob" required>
+                <input type="date" name="dob" >
               </div>
 
               <div>
                 <label for="classy">Class:</label>
                 <select name="classy" required>
-                  <option value="1">Class 1</option>
-                  <option value="2">Class 2</option>
-                  <option value="3">Class 3</option>
-                  <option value="4">Class 4</option>
-                  <option value="5">Class 5</option>
+                  <option value="1st">Class 1</option>
+                  <option value="2nd">Class 2</option>
+                  <option value="3rd">Class 3</option>
+                  <option value="4th">Class 4</option>
+                  <option value="5th">Class 5</option>
                 </select>
               </div>
               
               <div>
                 <label for="caste">Caste:</label>
-                <select name="caste" required>
+                <select name="caste" >
                   <option value="">Select</option>
                   <option value="General">General</option>
                   <option value="OBC">OBC</option>
@@ -189,7 +220,7 @@
               <div>
                 <label>Tribal:</label>
                 <div class="radio-group">
-                  <input type="radio" name="tribal" value="Yes" id="tribal-yes" required hidden>
+                  <input type="radio" name="tribal" value="Yes" id="tribal-yes"  hidden>
                   <label class="radio-btn" for="tribal-yes">Yes</label>
               
                   <input type="radio" name="tribal" value="No" id="tribal-no" hidden>
@@ -200,43 +231,43 @@
               <!-- Row 4: Father's Details -->
               <div>
                 <label for="fatherName">Father’s Name:</label>
-                <input type="text" name="fatherName" required>
+                <input type="text" name="fatherName" >
               </div>
               <div>
                 <label for="fatherOccupation">Father’s Occupation:</label>
-                <input type="text" name="fatherOccupation" required>
+                <input type="text" name="fatherOccupation" >
               </div>
               <div>
                 <label for="fatherPhone">Father’s Phone Number:</label>
-                <input type="tel" name="fatherPhone" required>
+                <input type="tel" name="fatherPhone" >
               </div>
               <div>
                 <label for="fatherEmail">Father’s Email:</label>
-                <input type="email" name="fatherEmail" required>
+                <input type="email" name="fatherEmail" >
               </div>
       
               <!-- Row 5: Mother's Details -->
               <div>
                 <label for="motherName">Mother’s Name:</label>
-                <input type="text" name="motherName" required>
+                <input type="text" name="motherName" >
               </div>
               <div>
                 <label for="motherOccupation">Mother’s Occupation:</label>
-                <input type="text" name="motherOccupation" required>
+                <input type="text" name="motherOccupation" >
               </div>
               <div>
                 <label for="motherPhone">Mother’s Phone Number:</label>
-                <input type="tel" name="motherPhone" required>
+                <input type="tel" name="motherPhone" >
               </div>
               <div>
                 <label for="motherEmail">Mother’s Email:</label>
-                <input type="email" name="motherEmail" required>
+                <input type="email" name="motherEmail" >
               </div>
       
               <!-- Address -->
               <div class="full-width">
                 <label for="address">Address:</label>
-                <textarea name="address" required></textarea>
+                <textarea name="address" ></textarea>
               </div>
       
               <!-- Submit -->
@@ -255,6 +286,15 @@
         <div class="container1">
             <h3>New Teacher Registration
               <div class="space"></div>
+              <% if(message != null) { %>
+                <div><%= message %></div>
+              <% } else if(success != null) { %>
+                <div><%= success %></div>
+              <% } else if (failed != null) { %>
+                <div><%= failed %></div>
+              <% } else { %>
+                
+              <% }%>
             </h3>
             <form id="teacherForm" action="/Tsubmit" method="POST">
                 <div class="form-grid">
@@ -264,10 +304,12 @@
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" placeholder="Enter Full Name" required>
                     </div>
+                    <!--
                     <div>
                         <label for="sid">School ID:</label>
                         <input type="number" id="sid" name="sid" required readonly>
                     </div>
+                    --> 
                     <div>
                         <label for="tid">TID:</label>
                         <input type="number" id="tid" name="tid" required>
@@ -304,14 +346,14 @@
                         </select>
                     </div>
                     <div>
-                        <label>Sex:</label>
-                        <div class="radio-group">
-                            <input type="radio" id="male" name="sex" value="Male" hidden required>
-                            <label for="male" class="radio-btn">Male</label>
-    
-                            <input type="radio" id="female" name="sex" value="Female" hidden>
-                            <label for="female" class="radio-btn">Female</label>
-                        </div>
+                      <label>Sex:</label>
+                      <div class="radio-group">
+                        <input type="radio" name="sex" value="Male" id="male"  hidden>
+                        <label class="radio-btn" for="male">Male</label>
+                    
+                        <input type="radio" name="sex" value="Female" id="female" hidden>
+                        <label class="radio-btn" for="female">Female</label>
+                      </div>
                     </div>
     
                     <!-- Experience, Domain, Mobile, Email -->
@@ -357,41 +399,45 @@
     
     </div>
     <!-----------------------------------------Tribal------------------------------------------------------------->
- 
     <div id="tribal" class="page">
-      <div class="tribal-container">
+      <div id="assignment-app">
+        <div class="actions"  >
+          <h1>Tribal Assignment</h1>
+          <button onclick="assign()">Assign</button>
+          <button onclick="shuffle()">Shuffle</button>
+        </div>
+    
+        <div class="container">
+          <!-- Left Column: Students -->
+          <div class="column" id="membersColumn">
+            <h2>Tribal Students</h2>
+            <ul>
+              <% student.forEach(students => { %>
+                <li class="user unassigned">
+                  <small>ID: <%= students.rollNo %></small><br>
+                  <%= students.fullName %>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+    
+          <!-- Right Column: Teachers -->
+          <div class="column">
+            <h2>Teachers</h2>
+            <ul>
+              <% teacher.forEach(teachers => { %>
+                <li class="user assigned">
+                  <small>ID: <%= teachers.tid %></small>&nbsp;<%= teachers.name %>
+                  
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 
-<div class="actions">
-  <button id="btn" onclick="assign()">Assign</button>
-  <button id="btn"onclick="shuffle()">Shuffle</button>
-</div>
-
-<div class="container8">
-  <!-- Members Column -->
-  <div class="column" id="membersColumn">
-    <h2>Tribal Students</h2>
-    <ul id="leaders">
-    <% student.forEach(students => { %>
-        <div class="assigned"><%= students.fullName %></div>
-    <% }) %>
-    </ul>
-  </div>
-
-  <!-- Team Leaders Column -->
-  <div class="column" id="leadersColumn">
-    <h2>Teachers (11)</h2>
-    <ul id="leaders">
-      <% teacher.forEach(teachers => { %>
-        <div class="assigned"><%= teachers.name %></div>
-    <% }) %>
-    </ul>
-  </div>
-</div>
-</div>
-</div>
-
-<script>
-</script>
 
 
     <!-----------------------------------------Doctor------------------------------------------------------------->
@@ -460,75 +506,85 @@
   <!-- Load Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script>
+  const timeout = 5000; // Time it takes for the toast to disappear, in ms
+  // NOTE: Be sure to edit the css animation as well for the progress bar
+  
+  function showToast(message, type = "success") {
+    // Find or create toast container if it doesn't exist
+    let toastContainer = document.querySelector(".toast-container");
+    if (!toastContainer) {
+      toastContainer = document.createElement("div");
+      toastContainer.classList.add("toast-container");
+      document.body.appendChild(toastContainer);
+    }
+    const toast = document.createElement("div");
+    toast.classList.add("toast", type);
+    toast.innerHTML = `
+      <div class="toast-content">
+        <i class="bi icon bi-${getIcon(type)}"></i>
+        <div class="message">
+          <span class="text text-1">${capitalize(type)}</span>
+          <span class="text text-2">${message}</span>
+        </div>
+      </div>
+      <i class="bi bi-x-lg close"></i>
+      <div class="progress"></div>
+    `;
+    toastContainer.appendChild(toast);
+    
+    // Force a reflow to ensure the toast is rendered before adding the active class
+    void toast.offsetHeight;
+    
+    // Add active class after a small delay to ensure animation works
+    setTimeout(() => {
+      toast.classList.add("active");
+      toast.querySelector(".progress").classList.add("active");
+    }, 10);
+    
+    const progress = toast.querySelector(".progress");
+    const closeIcon = toast.querySelector(".close");
+    
+    // Auto-remove toast after 5s
+    const timer1 = setTimeout(() => {
+      toast.classList.remove("active");
+    }, timeout);
+    
+    const timer2 = setTimeout(() => {
+      progress.classList.remove("active");
+      setTimeout(() => toast.remove(), 400);
+    }, timeout + 300);
+    
+    // Manual close
+    closeIcon.addEventListener("click", () => {
+      toast.classList.remove("active");
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(showToast);
+      setTimeout(() => toast.remove(), 400);
+    });
+  }
+  
+  function getIcon(type) {
+    switch (type) {
+      case "success": return "check-circle-fill";
+      case "error": return "x-circle-fill";
+      case "warning": return "exclamation-triangle-fill";
+      case "info": return "info-circle-fill";
+      default: return "check-circle-fill";
+    }
+  }
+  
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+</script>
+
 <!-- Load your separate JS file -->
 <script src="./doctorCharts.js"></script>
-<script>
-  function showPage(id) {
-  const pages = document.querySelectorAll('.page');
-  pages.forEach(page => page.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
 
-  const members = Array.from({ length: 6 }, (_, i) => ({ name: `Student ${i + 1}`, assigned: false }));
-  const leaders = Array.from({ length: 11 }, (_, i) => ({ name: `Teacher ${i + 1}`, team: [] }));
-  let shuffledMembers = [...members]; // Used by assign() after shuffle()
+<script src="./page.js"></script>
 
-  // Function to render members and leaders
-  function render() {
-    const membersList = document.getElementById('members');
-    const leadersList = document.getElementById('leaders');
-    membersList.innerHTML = '';
-    leadersList.innerHTML = '';
 
-    // Render Members
-    members.forEach(member => {
-      const className = member.assigned ? 'assigned' : 'unassigned';
-      membersList.innerHTML += `<li class="user ${className}">${member.name}</li>`;
-    });
-
-    // Render Leaders
-    leaders.forEach(leader => {
-      const isAvailable = leader.team.length === 0;
-      const className = isAvailable ? 'unassigned' : 'assigned';
-      const teamList = leader.team.map(m => m.name).join(', ') || 'Available';
-      leadersList.innerHTML += `
-        `;
-    });
-  }
-
-  // Function to assign members to leaders
-  function assign() {
-    leaders.forEach(l => l.team = []);
-    members.forEach(m => m.assigned = false);
-
-    let index = 0;
-    for (let leader of leaders) {
-      leader.team = shuffledMembers.slice(index, index + 4);
-      leader.team.forEach(m => m.assigned = true);
-      index += 4;
-      if (index >= shuffledMembers.length) break;
-    }
-
-    render();
-  }
-
-  // Function to shuffle members before assignment
-  function shuffle() {
-    shuffledMembers = [...members];
-    for (let i = shuffledMembers.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledMembers[i], shuffledMembers[j]] = [shuffledMembers[j], shuffledMembers[i]];
-    }
-
-    // Reset previous assignments
-    leaders.forEach(l => l.team = []);
-    members.forEach(m => m.assigned = false);
-
-    render(); // Update UI with unassigned (red) states
-  }
-
-  render(); // Initial render
-
-}
-</script>
 </body>
 </html>

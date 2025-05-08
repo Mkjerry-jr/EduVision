@@ -1,7 +1,7 @@
     const mongoose = require('mongoose');
 
     const headSchema = new mongoose.Schema({
-        sid: Number,
+        sid: String,
         sname: String,
         hname: String,
         Address: String,

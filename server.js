@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
-  secret: 'your-secret-key',  // Change this to a random string
+  secret: 'your-secret-key',  // Change this to a random string if you are gay
   resave: false,
   saveUninitialized: true,
   cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
@@ -41,7 +41,6 @@ const BEORoutes = require("./routes/auth");
 const headRoutes = require("./routes/auth");
 const teacherRoutes = require("./routes/auth");
 const studentRoutes = require("./routes/auth");
-const formRoutes = require('./routes/form'); // Adjust path if needed
 const attendance = require('./routes/auth');
 
 app.set('trust proxy', 1)
@@ -55,8 +54,8 @@ app.use(session({
 // Use routes
 app.use('/auth', authRoutes);
 app.use('/dashboard', dashboardRoutes);
-app.use('/student', formRoutes); // Use the new student route
-app.use('/', formRoutes);//submit form post method
+app.use('/student', studentRoutes); // Use the new student route
+app.use('/', authRoutes);//submit form post method
 
 app.use("/", BEORoutes);
 app.use("/", clusterRoutes);

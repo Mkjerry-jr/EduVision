@@ -6,7 +6,24 @@
     <title>EduVision</title>
     <link rel="stylesheet" href="/styles/style.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/EduVision.png" sizes="32x32">
+
     <style>
+
+         .header {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: auto;
+        height: auto;
+        z-index: 10; /* Ensures logo stays on top */
+    }
+
+    .top-right-logo {
+        margin-right: 100px;
+        width: 200px; /* Slightly larger size */
+        height: auto;
+    }
         /* General Styling */
         body {
             display: flex;
@@ -139,6 +156,9 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <img src="/images/Eduvision_logo.png" alt="Logo" class="top-right-logo">
+    </div>
     <!-- Role Selection -->
     <div class="wrapper active" id="roleSelection">
         <h2>Select Role</h2>
