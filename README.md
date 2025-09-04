@@ -1,8 +1,7 @@
 # 🌐 EduVision  
 **Supervision Platform for Government Primary Schools**  
 
-EduVision is a smart education management system designed for **Government Primary Schools** to supervise and manage students efficiently.  
-It helps in **managing student records, monitoring attendance, tracking health reports, and allocating food prescriptions**, while also ensuring **special attention for tribal/nomadic children** by analyzing their locations and assigning teachers nearby.  
+EduVision is a smart education management system designed for **Government Primary Schools** to supervise and manage students efficiently. It helps in **managing student records, monitoring attendance, tracking health reports, and allocating food prescriptions**, while also ensuring **special attention for tribal/nomadic children** by analyzing their locations and assigning teachers nearby.  
 
 ---
 
