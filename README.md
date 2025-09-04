@@ -39,13 +39,9 @@ EduVision is a smart education management system designed for **Government Prima
 
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/your-username/EduVision.git
+   git clone https://github.com/Mkjerry-jr/EduVision.git
    cd EduVision
    
    npm install
    
    npm start
-
-
-   
-
